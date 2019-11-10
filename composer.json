@@ -1,0 +1,54 @@
+{
+    "name": "orkhanahmadov/laravel-goldenpay",
+    "description": "Goldenpay package for Laravel",
+    "keywords": [
+        "orkhanahmadov",
+        "laravel-goldenpay"
+    ],
+    "homepage": "https://github.com/orkhanahmadov/laravel-goldenpay",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Orkhan Ahmadov",
+            "email": "ahmadov90@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "illuminate/support": "5.8.*|^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "3.8.*|^4.0",
+        "phpunit/phpunit": "^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Orkhanahmadov\\LaravelGoldenpay\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Orkhanahmadov\\LaravelGoldenpay\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Orkhanahmadov\\LaravelGoldenpay\\LaravelGoldenpayServiceProvider"
+            ],
+            "aliases": {
+                "LaravelGoldenpay": "Orkhanahmadov\\LaravelGoldenpay\\LaravelGoldenpayFacade"
+            }
+        }
+    }
+}
