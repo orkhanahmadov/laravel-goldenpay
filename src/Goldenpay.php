@@ -68,9 +68,24 @@ class Goldenpay
         return $paymentKey;
     }
 
-    public function paymentResult($paymentKey): PaymentResult
+    /**
+     * @param Payment|string $payment
+     *
+     * @return Payment
+     */
+    public function paymentResult($payment): Payment
     {
-        return $this->goldenpay->paymentResult($paymentKey);
+        if (! $payment instanceof Payment) {
+            $payment = Payment::wherePaymentKey($payment)->firstOrFail();
+        }
+
+        $result = $this->goldenpay->paymentResult($payment->payment_key);
+
+        dd($result);
+
+//        $payment->status =
+
+        return $payment;
     }
 
     /**

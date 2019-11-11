@@ -16,6 +16,10 @@ use Orkhanahmadov\Goldenpay\Enums\Language;
  * @property-read string $language
  * @property-read string $description
  * @property-read int $status
+ * @property-read string $message
+ * @property-read string $reference_number
+ * @property-read string $card_number
+ * @property-read \Carbon\Carbon $payment_date
  * @property-read int $checks
  * @property-read \Carbon\Carbon $created_at
  * @property-read \Carbon\Carbon $updated_at

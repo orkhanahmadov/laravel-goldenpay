@@ -37,6 +37,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->setUpDatabase();
+        $this->withFactories(__DIR__.'/../database/factories');
 
         $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
     }
