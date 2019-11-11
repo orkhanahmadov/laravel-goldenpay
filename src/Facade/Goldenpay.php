@@ -5,7 +5,7 @@ namespace Orkhanahmadov\LaravelGoldenpay\Facade;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpay
+ * @see \Orkhanahmadov\LaravelGoldenpay\Goldenpay
  */
 class Goldenpay extends Facade
 {

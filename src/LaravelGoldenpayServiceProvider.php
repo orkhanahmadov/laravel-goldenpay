@@ -2,7 +2,11 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay;
 
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Orkhanahmadov\Goldenpay\Goldenpay;
+use Orkhanahmadov\LaravelGoldenpay\Controllers\PaymentResultController;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
 {
@@ -17,11 +21,12 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-goldenpay');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-goldenpay');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+
+        Route::get(Config::get('goldenpay.routes.success'), [PaymentResultController::class, 'success']);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('goldenpay.php'),
+                __DIR__ . '/../config/config.php' => config_path('goldenpay.php'),
             ], 'config');
 
             // Publishing the views.
@@ -49,12 +54,13 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'goldenpay');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'goldenpay');
 
-        // Register the main class to use with the facade
         $this->app->singleton('goldenpay', function () {
-            return new LaravelGoldenpay;
+            return new Goldenpay(
+                Config::get('goldenpay.auth_key'),
+                Config::get('goldenpay.merchant_name')
+            );
         });
     }
 }
