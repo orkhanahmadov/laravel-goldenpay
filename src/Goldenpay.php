@@ -50,7 +50,7 @@ class Goldenpay
      */
     public function paymentKey(int $amount, string $cardType, string $description, ?string $language = null): PaymentKey
     {
-        $language = $language ?: $this->getLanguageFromLocale();
+        $language = $language ?: $this->languageFromLocale();
 
         $paymentKey = $this->goldenpay->paymentKey($amount, $cardType, $description, $language);
 
@@ -68,7 +68,7 @@ class Goldenpay
     /**
      * @return string
      */
-    private function getLanguageFromLocale()
+    private function languageFromLocale()
     {
         $currentLocale = $this->application->getLocale();
 

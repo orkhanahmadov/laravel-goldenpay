@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Payment
  * @package Orkhanahmadov\LaravelGoldenpay\Models
+ *
  * @property-read int $id
  * @property-read string $payment_key
  * @property-read int $amount
