@@ -5,8 +5,8 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
-use Orkhanahmadov\Goldenpay\PaymentKey;
-use Orkhanahmadov\Goldenpay\PaymentResult;
+use Orkhanahmadov\Goldenpay\Response\PaymentKey;
+use Orkhanahmadov\Goldenpay\Response\PaymentResult;
 
 class FakePaymentLibrary implements PaymentInterface
 {

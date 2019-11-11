@@ -37,6 +37,11 @@ class Payment extends Model
         'card_number',
     ];
 
+    protected $casts = [
+        'amount' => 'int',
+        'status' => 'int',
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
