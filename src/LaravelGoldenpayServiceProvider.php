@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\Goldenpay;
-use Orkhanahmadov\LaravelGoldenpay\Controllers\PaymentResultController;
+use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\PaymentResultController;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
 {
@@ -15,19 +15,24 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-goldenpay');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-goldenpay');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        Route::get(Config::get('goldenpay.routes.success'), [PaymentResultController::class, 'success']);
-
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('goldenpay.php'),
             ], 'config');
+
+            if (! class_exists('CreateGoldenpayPaymentKeysTable')) {
+                $this->publishes([
+                    __DIR__ . '/../database/migrations/goldenpay_payment_keys_table.php.stub' =>
+                        database_path('migrations/' . date('Y_m_d_His') . '_create_goldenpay_payment_keys_table.php'),
+                ], 'migrations');
+            }
+
+            if (! class_exists('CreateGoldenpayPaymentsTable')) {
+                $this->publishes([
+                    __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub' =>
+                        database_path('migrations/' . date('Y_m_d_His') . '_create_goldenpay_payments_table.php'),
+                ], 'migrations');
+            }
 
             // Publishing the views.
             /*$this->publishes([
@@ -47,6 +52,8 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
             // Registering package commands.
             // $this->commands([]);
         }
+
+        $this->registerRoutes();
     }
 
     /**
@@ -62,5 +69,10 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
                 Config::get('goldenpay.merchant_name')
             );
         });
+    }
+
+    private function registerRoutes()
+    {
+        Route::get(Config::get('goldenpay.routes.success'), [PaymentResultController::class, 'success']);
     }
 }

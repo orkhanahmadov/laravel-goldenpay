@@ -1,6 +1,6 @@
 <?php
 
-namespace Orkhanahmadov\LaravelGoldenpay\Controllers;
+namespace Orkhanahmadov\LaravelGoldenpay\Http\Controllers;
 
 use Illuminate\Contracts\Config\Repository;
 use Orkhanahmadov\Goldenpay\Goldenpay as GoldenpayLibrary;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Orkhanahmadov\LaravelGoldenpay\Controllers;
+namespace Orkhanahmadov\LaravelGoldenpay\Http\Controllers;
 
 use Illuminate\Http\Request;
 

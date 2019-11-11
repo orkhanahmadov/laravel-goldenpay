@@ -2,6 +2,7 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 
+use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Orkhanahmadov\LaravelGoldenpay\Facade\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider;
@@ -20,5 +21,24 @@ class TestCase extends Orchestra
         return [
             'Goldenpay' => Goldenpay::class,
         ];
+    }
+
+    /**
+     * Set up the database.
+     */
+    protected function setUpDatabase()
+    {
+        include_once __DIR__ . '/../database/migrations/goldenpay_payment_keys_table.php.stub';
+        (new \CreateGoldenpayPaymentKeysTable())->up();
+
+        include_once __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub';
+        (new \CreateGoldenpayPaymentsTable())->up();
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setUpDatabase();
     }
 }
