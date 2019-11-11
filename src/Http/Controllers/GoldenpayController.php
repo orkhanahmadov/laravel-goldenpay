@@ -14,11 +14,7 @@ abstract class GoldenpayController
     /**
      * @var Application
      */
-    protected $app;
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected $application;
     /**
      * @var Goldenpay
      */
@@ -31,58 +27,61 @@ abstract class GoldenpayController
      * @var Repository
      */
     protected $config;
+    /**
+     * @var Payment
+     */
+    protected $payment;
 
     /**
      * Controller constructor.
      *
-     * @param Application $app
+     * @param Application $application
      * @param Repository $config
      * @param Request $request
      * @param Goldenpay $goldenpay
      * @param Dispatcher $dispatcher
      */
     public function __construct(
-        Application $app,
+        Application $application,
         Repository $config,
         Request $request,
         Goldenpay $goldenpay,
         Dispatcher $dispatcher
     ) {
-        $this->app = $app;
+        $this->application = $application;
         $this->config = $config;
-        $this->request = $request;
         $this->goldenpay = $goldenpay;
         $this->dispatcher = $dispatcher;
 
-        $this->checkPaymentResult();
+        $this->checkPaymentResult($request);
     }
 
     /**
      * Checks payment result with "payment_key" query parameter.
+     *
+     * @param Request $request
      */
-    final protected function checkPaymentResult(): void
+    final protected function checkPaymentResult(Request $request): void
     {
-        $payment = $this->goldenpay->paymentResult($this->request->query('payment_key'));
+        $this->payment = $this->goldenpay->paymentResult($request->query('payment_key'));
 
-        $this->fireEvent($payment);
+        $this->fireEvent($this->payment);
     }
 
     /**
      * Fires event based on payment status.
      *
      * @param Payment $payment
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function fireEvent(Payment $payment): void
     {
         if ($payment->status === 1) {
-            $event = $this->app->make(
+            $event = $this->application->make(
                 $this->config->get('goldenpay.events.payment_successful'),
                 [$payment]
             );
         } else {
-            $event = $this->app->make(
+            $event = $this->application->make(
                 $this->config->get('goldenpay.events.payment_failed'),
                 [$payment]
             );
