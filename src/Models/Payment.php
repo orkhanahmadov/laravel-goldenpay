@@ -9,20 +9,20 @@ use Orkhanahmadov\Goldenpay\Enums\Language;
  * Class Payment
  * @package Orkhanahmadov\LaravelGoldenpay\Models
  *
- * @property-read int $id
- * @property-read string $payment_key
- * @property-read int $amount
- * @property-read string $card_type
- * @property-read string $language
- * @property-read string $description
- * @property-read int $status
- * @property-read string $message
- * @property-read string $reference_number
- * @property-read string $card_number
- * @property-read \Carbon\Carbon $payment_date
- * @property-read int $checks
- * @property-read \Carbon\Carbon $created_at
- * @property-read \Carbon\Carbon $updated_at
+ * @property int $id
+ * @property string $payment_key
+ * @property int $amount
+ * @property string $card_type
+ * @property string $language
+ * @property string $description
+ * @property int $status
+ * @property string $message
+ * @property string $reference_number
+ * @property string $card_number
+ * @property \Carbon\Carbon $payment_date
+ * @property int $checks
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @method static Payment first()
  */
 class Payment extends Model

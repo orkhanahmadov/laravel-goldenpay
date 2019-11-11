@@ -4,6 +4,7 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature;
 
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
+use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\PaymentKey;
 use Orkhanahmadov\Goldenpay\PaymentResult;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
@@ -47,19 +48,31 @@ class GoldenpayTest extends TestCase
 
     public function testPaymentResult()
     {
-        $this->assertCount(0, Payment::all());
-        $this->assertNull(Payment::first());
+//        $this->assertCount(0, Payment::all());
+//        $this->assertNull(Payment::first());
+
+        factory(Payment::class)->create(['payment_key' => 'valid-payment-key']);
 
         $result = $this->goldenpay->paymentResult('valid-payment-key');
 
-        $this->assertInstanceOf(PaymentResult::class, $result);
+        $this->assertInstanceOf(Payment::class, $result);
+        $this->assertSame(1, $result->status);
+        $this->assertSame('success', $result->message);
+        $this->assertSame(100, $result->amount);
+        $this->assertSame(1, $result->checks);
+        $this->assertInstanceOf(\DateTimeImmutable::class, $result->payment_date);
+        $this->assertSame('123456******7890', $result->card_number);
+        $this->assertSame('lv', $result->language);
+        $this->assertSame('item-description', $result->description);
+        $this->assertSame('12345678', $result->reference_number);
     }
 
     public function testDemo()
     {
-//        $paymentKey = $this->goldenpay->paymentKey(100, CardType::MASTERCARD(), 'test item');
+//        $this->app->bind(PaymentInterface::class, \Orkhanahmadov\Goldenpay\Goldenpay::class);
+        $paymentKey = $this->goldenpay->paymentKey(100, CardType::MASTERCARD(), 'test item');
 
-//        dd($paymentKey->paymentUrl());
+        dd($paymentKey->getKey());
 
         // https://rest.goldenpay.az/web/paypage?payment_key=47365534-7cce-492c-a1cf-4ebe41439823
 

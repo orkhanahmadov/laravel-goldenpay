@@ -83,7 +83,7 @@ class Goldenpay
 
         dd($result);
 
-//        $payment->status =
+        $payment->status = $result->getPaymentKey()->getCode();
 
         return $payment;
     }
