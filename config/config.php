@@ -48,16 +48,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Database table names
+    | Database table name
     |--------------------------------------------------------------------------
     |
-    | Defines names for corresponding tables in database.
+    | Defines name for table in database.
     |
     */
 
-    'tables' => [
-        'payments' => 'goldenpay_payments',
-        'payment_details' => 'goldenpay_payment_details',
-    ],
+    'table_name' => 'goldenpay_payments',
 
 ];

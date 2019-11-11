@@ -30,9 +30,6 @@ class TestCase extends Orchestra
     {
         include_once __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub';
         (new \CreateGoldenpayPaymentsTable())->up();
-
-        include_once __DIR__ . '/../database/migrations/goldenpay_payment_details_table.php.stub';
-        (new \CreateGoldenpayPaymentDetailsTable())->up();
     }
 
     protected function setUp(): void
@@ -41,6 +38,6 @@ class TestCase extends Orchestra
 
         $this->setUpDatabase();
 
-        $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
+//        $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
     }
 }

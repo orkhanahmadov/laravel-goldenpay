@@ -30,13 +30,6 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
                 ], 'migrations');
             }
 
-            if (! class_exists('CreateGoldenpayPaymentDetailsTable')) {
-                $this->publishes([
-                    __DIR__.'/../database/migrations/goldenpay_payment_details_table.php.stub' =>
-                        database_path('migrations/'.date('Y_m_d_His').'_create_goldenpay_payment_details_table.php'),
-                ], 'migrations');
-            }
-
             // Publishing the views.
             /*$this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-goldenpay'),

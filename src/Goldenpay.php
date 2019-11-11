@@ -4,9 +4,12 @@ namespace Orkhanahmadov\LaravelGoldenpay;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
+use Orkhanahmadov\Goldenpay\Enums\CardType;
+use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\PaymentKey;
+use Orkhanahmadov\Goldenpay\PaymentResult;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 class Goldenpay
@@ -40,47 +43,47 @@ class Goldenpay
 
     /**
      * @param int $amount
-     * @param string $cardType
+     * @param CardType $cardType
      * @param string $description
-     * @param string|null $language
+     * @param Language|null $lang
      *
      * @throws \Orkhanahmadov\Goldenpay\Exceptions\GoldenpayPaymentKeyException
      *
      * @return PaymentKey
      */
-    public function paymentKey(int $amount, string $cardType, string $description, ?string $language = null): PaymentKey
+    public function paymentKey(int $amount, CardType $cardType, string $description, ?Language $lang = null): PaymentKey
     {
-        $language = $language ?: $this->languageFromLocale();
+        $lang = $lang ?: $this->languageFromLocale();
 
-        $paymentKey = $this->goldenpay->paymentKey($amount, $cardType, $description, $language);
+        $paymentKey = $this->goldenpay->paymentKey($amount, $cardType, $description, $lang);
 
         Payment::create([
             'payment_key' => $paymentKey->getKey(),
             'amount' => $amount,
-            'card_type' => $cardType,
-            'language' => $language,
+            'card_type' => $cardType->getValue(),
+            'language' => $lang->getValue(),
             'description' => $description,
         ]);
 
         return $paymentKey;
     }
 
-//    public function checkResult($paymentKey)
-//    {
-//
-//    }
+    public function paymentResult($paymentKey): PaymentResult
+    {
+        return $this->goldenpay->paymentResult($paymentKey);
+    }
 
     /**
-     * @return string
+     * @return Language
      */
-    private function languageFromLocale(): string
+    private function languageFromLocale(): Language
     {
-        $currentLocale = $this->application->getLocale();
+        $currentLocale = strtoupper($this->application->getLocale());
 
-        if (! in_array($currentLocale, ['en', 'ru', 'az'])) {
-            return 'en';
+        if (! in_array($currentLocale, ['EN', 'RU', 'AZ'])) {
+            return Language::EN();
         }
 
-        return $currentLocale === 'az' ? 'lv' : $currentLocale;
+        return Language::{$currentLocale}();
     }
 }

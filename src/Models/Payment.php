@@ -24,10 +24,18 @@ class Payment extends Model
 {
     protected $guarded = [];
 
+    protected $dates = [
+        'payment_date',
+    ];
+
+    protected $hidden = [
+        'card_number',
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('goldenpay.tables.payments'));
+        $this->setTable(config('goldenpay.table_name'));
     }
 }

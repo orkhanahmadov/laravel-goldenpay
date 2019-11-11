@@ -2,6 +2,8 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 
+use Orkhanahmadov\Goldenpay\Enums\CardType;
+use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\PaymentKey;
 use Orkhanahmadov\Goldenpay\PaymentResult;
@@ -25,13 +27,13 @@ class FakePaymentLibrary implements PaymentInterface
      * Generates new payment key.
      *
      * @param int $amount
-     * @param string $cardType
+     * @param CardType $cardType
      * @param string $description
-     * @param string $lang
+     * @param Language|null $lang
      *
      * @return PaymentKey
      */
-    public function paymentKey(int $amount, string $cardType, string $description, string $lang): PaymentKey
+    public function paymentKey(int $amount, CardType $cardType, string $description, ?Language $lang): PaymentKey
     {
         return new PaymentKey(1, 'success', 'valid-payment-key');
     }
@@ -46,7 +48,19 @@ class FakePaymentLibrary implements PaymentInterface
     public function paymentResult($paymentKey): PaymentResult
     {
         return new PaymentResult([
-
+            'status' => [
+                'code' => 1,
+                'message' => 'success'
+            ],
+            'paymentKey' => $paymentKey,
+            'merchantName' => 'merchant name',
+            'amount' => 100,
+            'checkCount' => 1,
+            'paymentDate' => '2019-11-10 17:05:30',
+            'cardNumber' => '123456******7890',
+            'language' => 'lv',
+            'description' => 'item-description',
+            'rrn' => '12345678',
         ]);
     }
 }

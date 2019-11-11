@@ -11,7 +11,7 @@ class CreateGoldenpayPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('goldenpay.tables.payments'), function (Blueprint $table) {
+        Schema::create(config('goldenpay.table_name'), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('payment_key', 36)->index();
             $table->unsignedInteger('amount');
@@ -19,6 +19,10 @@ class CreateGoldenpayPaymentsTable extends Migration
             $table->enum('language', ['en', 'ru', 'lv']);
             $table->string('description');
             $table->integer('status')->nullable();
+            $table->string('message')->nullable();
+            $table->string('reference_number')->nullable();
+            $table->string('card_number')->nullable();
+            $table->timestamp('payment_date')->nullable();
             $table->integer('checks')->default(0);
             $table->timestamps();
         });
@@ -29,6 +33,6 @@ class CreateGoldenpayPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('goldenpay.tables.payments'));
+        Schema::dropIfExists(config('goldenpay.table_name'));
     }
 }
