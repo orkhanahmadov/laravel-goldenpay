@@ -3,6 +3,7 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Orkhanahmadov\Goldenpay\Enums\Language;
 
 /**
  * Class Payment

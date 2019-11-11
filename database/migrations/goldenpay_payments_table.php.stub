@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Orkhanahmadov\Goldenpay\Enums\CardType;
+use Orkhanahmadov\Goldenpay\Enums\Language;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGoldenpayPaymentsTable extends Migration
 {
@@ -15,13 +17,13 @@ class CreateGoldenpayPaymentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('payment_key', 36)->index();
             $table->unsignedInteger('amount');
-            $table->enum('card_type', ['v', 'm']);
-            $table->enum('language', ['en', 'ru', 'lv']);
+            $table->enum('card_type', CardType::values());
+            $table->enum('language', Language::values());
             $table->string('description');
             $table->integer('status')->nullable();
             $table->string('message')->nullable();
             $table->string('reference_number')->nullable();
-            $table->string('card_number')->nullable();
+            $table->string('card_number', 16)->nullable();
             $table->timestamp('payment_date')->nullable();
             $table->integer('checks')->default(0);
             $table->timestamps();
