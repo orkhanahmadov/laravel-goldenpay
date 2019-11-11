@@ -13,15 +13,12 @@ class CreateGoldenpayPaymentDetailsTable extends Migration
     {
         Schema::create(config('goldenpay.tables.payment_details'), function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->unsignedBigInteger('payment_key_id')->index();
-            $table->foreign('payment_key_id')->on(config('goldenpay.tables.payment_keys'))->references('id');
-
+            $table->unsignedBigInteger('payment_id')->index();
+            $table->foreign('payment_id')->on(config('goldenpay.tables.payments'))->references('id');
             $table->string('message');
             $table->string('reference_number');
             $table->string('card_number');
             $table->timestamp('resulted_at');
-
             $table->timestamps();
         });
     }

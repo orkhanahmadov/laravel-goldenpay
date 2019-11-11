@@ -1,6 +1,6 @@
 <?php
 
-namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature;
+namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature\Http;
 
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 

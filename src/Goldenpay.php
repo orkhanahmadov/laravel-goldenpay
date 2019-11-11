@@ -5,6 +5,7 @@ namespace Orkhanahmadov\LaravelGoldenpay;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
+use Orkhanahmadov\Goldenpay\GoldenpayInterface;
 use Orkhanahmadov\Goldenpay\PaymentKey;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
@@ -24,10 +25,13 @@ class Goldenpay
      *
      * @param Application $application
      * @param Repository $config
+     * @param GoldenpayInterface $goldenpay
      */
-    public function __construct(Application $application, Repository $config)
+    public function __construct(Application $application, Repository $config, GoldenpayInterface $goldenpay)
     {
         $this->application = $application;
+        $this->goldenpay = $goldenpay;
+
         $this->goldenpay = new Library(
             $config->get('goldenpay.auth_key'),
             $config->get('goldenpay.merchant_name')
