@@ -65,10 +65,15 @@ class Goldenpay
         return $paymentKey;
     }
 
+//    public function checkResult($paymentKey)
+//    {
+//
+//    }
+
     /**
      * @return string
      */
-    private function languageFromLocale()
+    private function languageFromLocale(): string
     {
         $currentLocale = $this->application->getLocale();
 

@@ -33,6 +33,16 @@ class GoldenpayTest extends TestCase
         $this->assertEquals(0, $payment->checks);
     }
 
+    public function testPaymentKeyWithDefinedLanguage()
+    {
+        $this->assertNull(Payment::first());
+
+        $this->goldenpay->paymentKey(100, 'm', 'something', 'ru');
+
+        $this->assertNotNull($payment = Payment::first());
+        $this->assertEquals('ru', $payment->language);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
