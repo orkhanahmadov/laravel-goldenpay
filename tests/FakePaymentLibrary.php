@@ -31,9 +31,9 @@ class FakePaymentLibrary implements PaymentInterface
      *
      * @return PaymentKey
      */
-    public function paymentKey(int $amount, string $cardType, string $description, string $lang): PaymentKey
+    public function paymentKey(int $amount, string $cardType, string $description, string $lang = 'lv'): PaymentKey
     {
-        return new PaymentKey(1, 'valid message', 'valid-payment-key');
+        return new PaymentKey(1, 'success', 'valid-payment-key');
     }
 
     /**

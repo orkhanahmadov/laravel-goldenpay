@@ -21,7 +21,7 @@ class GoldenpayTest extends TestCase
 
         $this->assertSame('valid-payment-key', $paymentKey->getKey());
         $this->assertSame(1, $paymentKey->getCode());
-        $this->assertSame('valid message', $paymentKey->getMessage());
+        $this->assertSame('success', $paymentKey->getMessage());
         $this->assertCount(1, Payment::all());
         $this->assertNotNull($payment = Payment::first());
         $this->assertEquals('valid-payment-key', $payment->payment_key);
