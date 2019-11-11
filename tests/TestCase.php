@@ -2,7 +2,6 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 
-use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Orkhanahmadov\LaravelGoldenpay\Facade\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider;
