@@ -5,7 +5,9 @@ namespace Orkhanahmadov\LaravelGoldenpay;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\PaymentResultController;
+use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
 {
@@ -14,6 +16,8 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(PaymentInterface::class, Library::class);
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('goldenpay.php'),

@@ -3,6 +3,7 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
+use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\LaravelGoldenpay\Facade\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider;
 
@@ -39,5 +40,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->setUpDatabase();
+
+        $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
     }
 }
