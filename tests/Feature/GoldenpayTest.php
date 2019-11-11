@@ -50,12 +50,9 @@ class GoldenpayTest extends TestCase
         $this->assertCount(0, Payment::all());
         $this->assertNull(Payment::first());
 
-
-
         $result = $this->goldenpay->paymentResult('valid-payment-key');
 
         $this->assertInstanceOf(PaymentResult::class, $result);
-
     }
 
     public function testDemo()

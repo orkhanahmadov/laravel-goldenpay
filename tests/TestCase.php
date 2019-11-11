@@ -38,6 +38,6 @@ class TestCase extends Orchestra
 
         $this->setUpDatabase();
 
-//        $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
+        $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
     }
 }
