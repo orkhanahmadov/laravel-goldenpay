@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
-class PaymentReceivedEvent
+class PaymentSuccessfulEvent
 {
     use Dispatchable;
     use InteractsWithSockets;

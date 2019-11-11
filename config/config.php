@@ -57,4 +57,19 @@ return [
 
     'table_name' => 'goldenpay_payments',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Events
+    |--------------------------------------------------------------------------
+    |
+    | Defines event classes for payment events.
+    | Each event receives instance of related \Orkhanahmadov\LaravelGoldenpay\Models\Payment model.
+    |
+    */
+
+    'events' => [
+        'payment_successful' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent::class,
+        'payment_failed' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentFailedEvent::class,
+    ],
+
 ];

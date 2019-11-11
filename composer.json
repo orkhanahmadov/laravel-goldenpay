@@ -49,7 +49,7 @@
                 "Orkhanahmadov\\LaravelGoldenpay\\LaravelGoldenpayServiceProvider"
             ],
             "aliases": {
-                "LaravelGoldenpay": "Orkhanahmadov\\LaravelGoldenpay\\Facade\\Goldenpay"
+                "Goldenpay": "Orkhanahmadov\\LaravelGoldenpay\\Facade\\Goldenpay"
             }
         }
     }

@@ -65,7 +65,10 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
         });
     }
 
-    private function registerRoutes()
+    /**
+     * Registers package routes.
+     */
+    private function registerRoutes(): void
     {
         Route::get(Config::get('goldenpay.routes.success'), SuccessfulPaymentController::class);
         Route::get(Config::get('goldenpay.routes.fail'), FailedPaymentController::class);
