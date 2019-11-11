@@ -46,4 +46,18 @@ return [
         'fail' => 'goldenpay/fail',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Database table names
+    |--------------------------------------------------------------------------
+    |
+    | Defines names for corresponding tables in database.
+    |
+    */
+
+    'tables' => [
+        'payments' => 'goldenpay_payments',
+        'payment_keys' => 'goldenpay_payment_keys',
+    ],
+
 ];

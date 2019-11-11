@@ -4,14 +4,14 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGoldenpayPaymentsTable extends Migration
+class CreateGoldenpayPaymentKeysTable extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        Schema::create(config('goldenpay.tables.payments'), function (Blueprint $table) {
+        Schema::create(config('goldenpay.tables.payment_keys'), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -22,6 +22,6 @@ class CreateGoldenpayPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('goldenpay.tables.payments'));
+        Schema::dropIfExists(config('goldenpay.tables.payment_keys'));
     }
 }
