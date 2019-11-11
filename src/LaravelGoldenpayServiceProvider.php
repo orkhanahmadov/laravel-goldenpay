@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
-use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\PaymentResultController;
+use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\FailedPaymentController;
+use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\SuccessfulPaymentController;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
@@ -66,6 +67,7 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
 
     private function registerRoutes()
     {
-        Route::get(Config::get('goldenpay.routes.success'), [PaymentResultController::class, 'success']);
+        Route::get(Config::get('goldenpay.routes.success'), SuccessfulPaymentController::class);
+        Route::get(Config::get('goldenpay.routes.fail'), FailedPaymentController::class);
     }
 }

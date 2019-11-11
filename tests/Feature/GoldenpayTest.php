@@ -5,8 +5,6 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature;
 use Carbon\Carbon;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
-use Orkhanahmadov\Goldenpay\Response\PaymentKey;
-use Orkhanahmadov\Goldenpay\Response\PaymentResult;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
@@ -59,20 +57,6 @@ class GoldenpayTest extends TestCase
         $this->assertSame('some item', $result->description);
         $this->assertSame('12345678', $result->reference_number);
     }
-
-//    public function testDemo()
-//    {
-////        $this->app->bind(PaymentInterface::class, \Orkhanahmadov\Goldenpay\Goldenpay::class);
-////        $paymentKey = $this->goldenpay->paymentKey(100, CardType::MASTERCARD(), 'test item');
-//
-//        factory(Payment::class)->create(['payment_key' => 'dc44d133-ad1b-4bca-b479-4f27f838b031']);
-//
-////        dd($paymentKey->paymentUrl());
-//
-//        // https://rest.goldenpay.az/web/paypage?payment_key=47365534-7cce-492c-a1cf-4ebe41439823
-//
-//        $result = $this->goldenpay->paymentResult('dc44d133-ad1b-4bca-b479-4f27f838b031');
-//    }
 
     protected function setUp(): void
     {

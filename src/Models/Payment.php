@@ -23,6 +23,7 @@ use Orkhanahmadov\Goldenpay\Enums\Language;
  * @property int $checks
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read float|int $formatted_amount
  * @method static Payment first()
  */
 class Payment extends Model
@@ -47,5 +48,10 @@ class Payment extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('goldenpay.table_name'));
+    }
+
+    public function getFormattedAmountAttribute()
+    {
+        return $this->amount / 100;
     }
 }
