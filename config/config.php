@@ -56,8 +56,8 @@ return [
     */
 
     'tables' => [
-        'payment_keys' => 'goldenpay_payment_keys',
         'payments' => 'goldenpay_payments',
+        'payment_details' => 'goldenpay_payment_details',
     ],
 
 ];

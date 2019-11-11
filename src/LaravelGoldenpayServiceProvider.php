@@ -17,20 +17,20 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('goldenpay.php'),
+                __DIR__.'/../config/config.php' => config_path('goldenpay.php'),
             ], 'config');
-
-            if (! class_exists('CreateGoldenpayPaymentKeysTable')) {
-                $this->publishes([
-                    __DIR__ . '/../database/migrations/goldenpay_payment_keys_table.php.stub' =>
-                        database_path('migrations/' . date('Y_m_d_His') . '_create_goldenpay_payment_keys_table.php'),
-                ], 'migrations');
-            }
 
             if (! class_exists('CreateGoldenpayPaymentsTable')) {
                 $this->publishes([
-                    __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub' =>
-                        database_path('migrations/' . date('Y_m_d_His') . '_create_goldenpay_payments_table.php'),
+                    __DIR__.'/../database/migrations/goldenpay_payments_table.php.stub' =>
+                        database_path('migrations/'.date('Y_m_d_His').'_create_goldenpay_payments_table.php'),
+                ], 'migrations');
+            }
+
+            if (! class_exists('CreateGoldenpayPaymentDetailsTable')) {
+                $this->publishes([
+                    __DIR__.'/../database/migrations/goldenpay_payment_details_table.php.stub' =>
+                        database_path('migrations/'.date('Y_m_d_His').'_create_goldenpay_payment_details_table.php'),
                 ], 'migrations');
             }
 
@@ -61,7 +61,7 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'goldenpay');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'goldenpay');
 
         $this->app->singleton('goldenpay', function () {
             return new Goldenpay(

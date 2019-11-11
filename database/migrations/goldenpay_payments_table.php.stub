@@ -13,6 +13,12 @@ class CreateGoldenpayPaymentsTable extends Migration
     {
         Schema::create(config('goldenpay.tables.payments'), function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('payment_key', 36)->index();
+            $table->unsignedInteger('amount');
+            $table->enum('card_type', ['v', 'm']);
+            $table->enum('language', ['en', 'ru', 'lv']);
+            $table->string('description')->nullable();
+            $table->integer('checks')->default(0);
             $table->timestamps();
         });
     }

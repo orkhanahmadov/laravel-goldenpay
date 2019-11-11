@@ -4,12 +4,12 @@ namespace Orkhanahmadov\LaravelGoldenpay\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentKey extends Model
+class Detail extends Model
 {
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('goldenpay.tables.payment_keys'));
+        $this->setTable(config('goldenpay.tables.payment_details'));
     }
 }

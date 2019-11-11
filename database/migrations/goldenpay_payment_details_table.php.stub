@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateGoldenpayPaymentDetailsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        Schema::create(config('goldenpay.tables.payment_details'), function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->unsignedBigInteger('payment_key_id')->index();
+            $table->foreign('payment_key_id')->on(config('goldenpay.tables.payment_keys'))->references('id');
+
+            $table->integer('status_code');
+            $table->string('status_message');
+
+            $table->datetime('payment_date');
+            $table->string('reference_number');
+            $table->string('card_number');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        Schema::dropIfExists(config('goldenpay.tables.payment_details'));
+    }
+}
