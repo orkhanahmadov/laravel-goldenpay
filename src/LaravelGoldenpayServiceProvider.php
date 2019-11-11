@@ -5,7 +5,6 @@ namespace Orkhanahmadov\LaravelGoldenpay;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Orkhanahmadov\Goldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\PaymentResultController;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
@@ -64,10 +63,7 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'goldenpay');
 
         $this->app->singleton('goldenpay', function () {
-            return new Goldenpay(
-                Config::get('goldenpay.auth_key'),
-                Config::get('goldenpay.merchant_name')
-            );
+            return $this->app->make(Goldenpay::class);
         });
     }
 

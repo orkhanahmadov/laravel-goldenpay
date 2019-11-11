@@ -17,7 +17,7 @@ class CreateGoldenpayPaymentsTable extends Migration
             $table->unsignedInteger('amount');
             $table->enum('card_type', ['v', 'm']);
             $table->enum('language', ['en', 'ru', 'lv']);
-            $table->string('description')->nullable();
+            $table->string('description');
             $table->integer('status')->nullable();
             $table->integer('checks')->default(0);
             $table->timestamps();
