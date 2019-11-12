@@ -25,6 +25,12 @@ class PaymentTest extends TestCase
 
     public function testPendingScope()
     {
-        $this->markTestIncomplete();
+        $finishedPayment = factory(Payment::class)->create(['created_at' => now()->subMinutes(31)]);
+        $pendingPayment = factory(Payment::class)->create(['created_at' => now()->subMinutes(10)]);
+
+        $payments = Payment::pending()->get();
+
+        $this->assertTrue($payments->contains($pendingPayment));
+        $this->assertFalse($payments->contains($finishedPayment));
     }
 }

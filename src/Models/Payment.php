@@ -2,6 +2,7 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read float|int $formatted_amount
  * @property-read bool $successful
  * @method static Payment first()
+ * @method static Builder pending()
  */
 class Payment extends Model
 {
@@ -61,5 +63,10 @@ class Payment extends Model
     public function getFormattedAmountAttribute()
     {
         return $this->amount / 100;
+    }
+
+    public function scopePending(Builder $builder): Builder
+    {
+        return $builder->where('created_at', '>', now()->subMinutes(30));
     }
 }
