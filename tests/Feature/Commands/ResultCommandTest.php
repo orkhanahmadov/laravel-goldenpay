@@ -14,18 +14,23 @@ class ResultCommandTest extends TestCase
     {
         $payment1 = factory(Payment::class)->create(['created_at' => now()->subMinutes(10)]);
         $payment2 = factory(Payment::class)->create(['created_at' => now()->subMinutes(12)]);
-        $payment3 = factory(Payment::class)->create(['status' => 1, 'created_at' => now()->subMinutes(5)]);
-        $payment4 = factory(Payment::class)->create(['created_at' => now()->subMinutes(45)]);
+        $payment3 = factory(Payment::class)->create(['checks' => 2, 'created_at' => now()->subMinutes(45)]);
+        $payment4 = factory(Payment::class)->create(['status' => 1, 'created_at' => now()->subMinutes(5)]);
+        $payment5 = factory(Payment::class)->create(['checks' => 7, 'created_at' => now()->subMinutes(45)]);
 
         $this->artisan('goldenpay:result');
 
         $this->assertSame(1, $payment1->refresh()->status);
         $this->assertSame(1, $payment2->refresh()->status);
         $this->assertSame(1, $payment3->refresh()->status);
-        $this->assertNull($payment4->refresh()->status);
-        Event::assertDispatched(config('goldenpay.events.payment_checked'), 2);
-        Event::assertNotDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($payment3) {
-            return $event->payment->id === $payment3->id;
+        $this->assertSame(1, $payment4->refresh()->status);
+        $this->assertNull($payment5->refresh()->status);
+        Event::assertDispatched(config('goldenpay.events.payment_checked'), 3);
+        Event::assertNotDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($payment4) {
+            return $event->payment->id === $payment4->id;
+        });
+        Event::assertNotDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($payment5) {
+            return $event->payment->id === $payment5->id;
         });
     }
 
