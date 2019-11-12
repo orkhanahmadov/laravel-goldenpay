@@ -22,4 +22,9 @@ class PaymentTest extends TestCase
         $failedPayment = factory(Payment::class)->create(['status' => 2]);
         $this->assertFalse($failedPayment->successful);
     }
+
+    public function testPendingScope()
+    {
+        $this->markTestIncomplete();
+    }
 }

@@ -51,11 +51,4 @@ class PaymentResultTest extends TestCase
         });
         Event::assertNotDispatched(config('goldenpay.events.payment_successful'));
     }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Event::fake();
-    }
 }

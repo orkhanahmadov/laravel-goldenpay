@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
+use Orkhanahmadov\LaravelGoldenpay\Commands\ResultCommand;
 use Orkhanahmadov\LaravelGoldenpay\Tests\FakeResultController;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
@@ -29,23 +30,9 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
                 ], 'migrations');
             }
 
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-goldenpay'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/laravel-goldenpay'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-goldenpay'),
-            ], 'lang');*/
-
-            // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                ResultCommand::class,
+            ]);
 
             $this->registerTestRoutes();
         }

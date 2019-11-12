@@ -78,6 +78,11 @@ class GoldenpayTest extends TestCase
         $this->assertInstanceOf(Payment::class, $result);
     }
 
+    public function testResultMethodFiresPaymentCheckedEvent()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testThrowsModelNotFoundExceptionIfPaymentKeyDoesNotExist()
     {
         $this->expectException(ModelNotFoundException::class);
