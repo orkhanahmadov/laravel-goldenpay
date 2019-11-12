@@ -17,9 +17,9 @@ class GoldenpayTest extends TestCase
 
         $payment = $this->goldenpay->payment(100, CardType::MASTERCARD(), 'item description');
 
-        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::payment() */
         $this->assertCount(1, Payment::all());
         $this->assertInstanceOf(Payment::class, $payment);
+        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::payment() */
         $this->assertNull($payment->status);
         $this->assertNull($payment->message);
         $this->assertSame('valid-payment-key', $payment->payment_key);
@@ -46,13 +46,14 @@ class GoldenpayTest extends TestCase
 
         $result = $this->goldenpay->result($payment);
 
-        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::result() */
         $this->assertInstanceOf(Payment::class, $result);
+        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::result() */
         $this->assertSame(1, $result->status);
         $this->assertSame('success', $result->message);
         $this->assertSame(2560, $result->amount);
         $this->assertSame(1, $result->checks);
         $this->assertInstanceOf(Carbon::class, $result->payment_date);
+        $this->assertSame('2019-11-10 17:05:30', $result->payment_date->format('Y-m-d H:i:s'));
         $this->assertSame('123456******7890', $result->card_number);
         $this->assertSame('lv', $result->language);
         $this->assertSame('some item', $result->description);

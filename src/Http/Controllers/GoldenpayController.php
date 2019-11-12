@@ -63,7 +63,7 @@ abstract class GoldenpayController
      */
     final protected function checkPaymentResult(Request $request): void
     {
-        $this->payment = $this->goldenpay->paymentResult($request->query('payment_key'));
+        $this->payment = $this->goldenpay->result($request->query('payment_key'));
 
         $this->fireEvent();
     }
@@ -73,7 +73,7 @@ abstract class GoldenpayController
      */
     private function fireEvent(): void
     {
-        if ($this->successful() === 1) {
+        if ($this->paymentSuccessful()) {
             $event = $this->application->make(
                 $this->config->get('goldenpay.events.payment_successful'),
                 [$this->payment]
@@ -93,7 +93,7 @@ abstract class GoldenpayController
      *
      * @return bool
      */
-    protected function successful(): bool
+    protected function paymentSuccessful(): bool
     {
         return $this->payment->status === 1;
     }

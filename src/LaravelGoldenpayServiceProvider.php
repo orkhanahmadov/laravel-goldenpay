@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
+use Orkhanahmadov\LaravelGoldenpay\Tests\FakeResultController;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
 {
@@ -68,7 +69,8 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
      */
     private function registerRoutes(): void
     {
-//        Route::get(Config::get('goldenpay.routes.success'), SuccessfulPaymentController::class);
-//        Route::get(Config::get('goldenpay.routes.fail'), FailedPaymentController::class);
+        if ($this->app->environment('testing')) {
+            Route::get('__goldenpay-fake-test-route__', [FakeResultController::class, 'successful']);
+        }
     }
 }

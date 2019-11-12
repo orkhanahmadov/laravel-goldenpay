@@ -42,6 +42,7 @@ class Payment extends Model
     protected $casts = [
         'amount' => 'int',
         'status' => 'int',
+        'checks' => 'int',
     ];
 
     public function __construct(array $attributes = [])
