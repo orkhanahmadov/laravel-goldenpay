@@ -53,7 +53,7 @@ class Goldenpay
     {
         $lang = $lang ?: $this->languageFromLocale();
 
-        $paymentKey = $this->goldenpay->paymentKey($amount, $cardType, $description, $lang);
+        $paymentKey = $this->goldenpay->payment($amount, $cardType, $description, $lang);
 
         return Payment::create([
             'status' => $paymentKey->getCode(),
@@ -77,7 +77,7 @@ class Goldenpay
             $payment = Payment::wherePaymentKey($payment)->firstOrFail();
         }
 
-        $result = $this->goldenpay->paymentResult($payment->payment_key);
+        $result = $this->goldenpay->result($payment->payment_key);
 
         $payment->status = $result->getCode();
         $payment->message = $result->getMessage();

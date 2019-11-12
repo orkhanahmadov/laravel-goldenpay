@@ -24,12 +24,12 @@ class FakePaymentLibrary implements PaymentInterface
     }
 
     /**
-     * Generates new payment key.
+     * Gets new payment key from Goldenpay.
      *
      * @param int $amount
      * @param CardType $cardType
      * @param string $description
-     * @param Language|null $lang
+     * @param Language $lang
      *
      * @return PaymentKey
      */
@@ -47,20 +47,20 @@ class FakePaymentLibrary implements PaymentInterface
      */
     public function result($paymentKey): PaymentResult
     {
-        return new PaymentResult([
-            'status' => [
-                'code' => 1,
-                'message' => 'success'
-            ],
-            'paymentKey' => $paymentKey,
-            'merchantName' => 'merchant name',
-            'amount' => 100,
-            'checkCount' => 1,
-            'paymentDate' => '2019-11-10 17:05:30',
-            'cardNumber' => '123456******7890',
-            'language' => 'lv',
-            'description' => 'item-description',
-            'rrn' => '12345678',
-        ]);
+        return new PaymentResult(
+            1,
+            'success',
+            [
+                'paymentKey' => $paymentKey,
+                'merchantName' => 'merchant name',
+                'amount' => 100,
+                'checkCount' => 1,
+                'paymentDate' => '2019-11-10 17:05:30',
+                'cardNumber' => '123456******7890',
+                'language' => 'lv',
+                'description' => 'item-description',
+                'rrn' => '12345678',
+            ]
+        );
     }
 }
