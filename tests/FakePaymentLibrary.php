@@ -11,6 +11,33 @@ use Orkhanahmadov\Goldenpay\Response\PaymentResult;
 class FakePaymentLibrary implements PaymentInterface
 {
     /**
+     * @var int
+     */
+    private $code;
+    /**
+     * @var string
+     */
+    private $message;
+    /**
+     * @var array|string|null
+     */
+    private $data = null;
+
+    /**
+     * FakePaymentLibrary constructor.
+     *
+     * @param int $code
+     * @param string $message
+     * @param array|string|null $data
+     */
+    public function __construct(int $code = 1, string $message = 'success', $data = null)
+    {
+        $this->code = $code;
+        $this->message = $message;
+        $this->data = $data;
+    }
+
+    /**
      * Sets Goldenpay authentication credentials.
      *
      * @param string $authKey
@@ -35,7 +62,7 @@ class FakePaymentLibrary implements PaymentInterface
      */
     public function payment(int $amount, CardType $cardType, string $description, ?Language $lang): PaymentKey
     {
-        return new PaymentKey(1, 'success', 'valid-payment-key');
+        return new PaymentKey($this->code, $this->message, $this->data ?: 'valid-payment-key');
     }
 
     /**
@@ -48,9 +75,9 @@ class FakePaymentLibrary implements PaymentInterface
     public function result($paymentKey): PaymentResult
     {
         return new PaymentResult(
-            1,
-            'success',
-            [
+            $this->code,
+            $this->message,
+            $this->data ?: [
                 'paymentKey' => $paymentKey,
                 'merchantName' => 'merchant name',
                 'amount' => 100,

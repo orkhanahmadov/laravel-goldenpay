@@ -49,7 +49,7 @@ class Goldenpay
      *
      * @return Payment
      */
-    public function paymentKey(int $amount, CardType $cardType, string $description, ?Language $lang = null): Payment
+    public function payment(int $amount, CardType $cardType, string $description, ?Language $lang = null): Payment
     {
         $lang = $lang ?: $this->languageFromLocale();
 
@@ -71,7 +71,7 @@ class Goldenpay
      *
      * @return Payment
      */
-    public function paymentResult($payment): Payment
+    public function result($payment): Payment
     {
         if (! $payment instanceof Payment) {
             $payment = Payment::wherePaymentKey($payment)->firstOrFail();

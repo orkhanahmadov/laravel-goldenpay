@@ -3,6 +3,7 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
@@ -10,13 +11,13 @@ use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
 class GoldenpayTest extends TestCase
 {
-    public function testPaymentKeyMethodCreatesPaymentAndReturnsInstance()
+    public function testPaymentMethodCreatesPaymentAndReturnsInstance()
     {
         $this->assertNull(Payment::first());
 
-        $payment = $this->goldenpay->paymentKey(100, CardType::MASTERCARD(), 'item description');
+        $payment = $this->goldenpay->payment(100, CardType::MASTERCARD(), 'item description');
 
-        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary */
+        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::payment() */
         $this->assertCount(1, Payment::all());
         $this->assertInstanceOf(Payment::class, $payment);
         $this->assertSame('valid-payment-key', $payment->payment_key);
@@ -28,23 +29,23 @@ class GoldenpayTest extends TestCase
         $this->assertEquals(0, $payment->checks);
     }
 
-    public function testCreatesPaymentKeyWithDefinedLanguage()
+    public function testCreatesPaymentMethodWithDefinedLanguage()
     {
-        $this->goldenpay->paymentKey(100, CardType::MASTERCARD(), 'something', Language::RU());
+        $this->goldenpay->payment(100, CardType::MASTERCARD(), 'something', Language::RU());
 
         $this->assertEquals('ru', Payment::first()->language);
     }
 
-    public function testPaymentResult()
+    public function testResultWithPaymentInstance()
     {
-        $payment = $this->goldenpay->paymentKey(2560, CardType::VISA(), 'some item', Language::AZ());
+        $payment = $this->goldenpay->payment(2560, CardType::VISA(), 'some item', Language::AZ());
         $this->assertNull($payment->payment_date);
         $this->assertNull($payment->card_number);
         $this->assertNull($payment->reference_number);
 
-        $result = $this->goldenpay->paymentResult($payment);
+        $result = $this->goldenpay->result($payment);
 
-        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary@paymentResult */
+        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::result() */
         $this->assertInstanceOf(Payment::class, $result);
         $this->assertSame(1, $result->status);
         $this->assertSame('success', $result->message);
@@ -57,8 +58,20 @@ class GoldenpayTest extends TestCase
         $this->assertSame('12345678', $result->reference_number);
     }
 
-    public function testPaymentResultCheckWithStringPaymentKey()
+    public function testResultCheckWithStringPaymentKey()
     {
-        $this->markTestIncomplete();
+        $payment = $this->goldenpay->payment(2560, CardType::VISA(), 'some item', Language::AZ());
+
+        $result = $this->goldenpay->result($payment->payment_key);
+
+        $this->assertInstanceOf(Payment::class, $result);
+    }
+
+    public function testThrowsModelNotFoundExceptionIfPaymentKeyDoesNotExist()
+    {
+        $this->expectException(ModelNotFoundException::class);
+        $this->expectExceptionMessage('No query results for model [Orkhanahmadov\LaravelGoldenpay\Models\Payment].');
+
+        $this->goldenpay->result('non-existing-payment-key');
     }
 }

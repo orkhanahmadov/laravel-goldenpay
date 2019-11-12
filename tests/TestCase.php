@@ -10,7 +10,7 @@ use Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider;
 class TestCase extends Orchestra
 {
     /**
-     * @var Goldenpay
+     * @var \Orkhanahmadov\LaravelGoldenpay\Goldenpay
      */
     protected $goldenpay;
 
