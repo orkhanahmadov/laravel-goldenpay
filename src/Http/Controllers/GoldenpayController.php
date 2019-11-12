@@ -16,17 +16,17 @@ abstract class GoldenpayController
      */
     protected $application;
     /**
-     * @var Goldenpay
+     * @var Repository
      */
-    protected $goldenpay;
+    protected $config;
     /**
      * @var Dispatcher
      */
     protected $dispatcher;
     /**
-     * @var Repository
+     * @var Goldenpay
      */
-    protected $config;
+    protected $goldenpay;
     /**
      * @var Payment
      */
@@ -45,13 +45,13 @@ abstract class GoldenpayController
         Application $application,
         Repository $config,
         Request $request,
-        Goldenpay $goldenpay,
-        Dispatcher $dispatcher
+        Dispatcher $dispatcher,
+        Goldenpay $goldenpay
     ) {
         $this->application = $application;
         $this->config = $config;
-        $this->goldenpay = $goldenpay;
         $this->dispatcher = $dispatcher;
+        $this->goldenpay = $goldenpay;
 
         $this->checkPaymentResult($request);
     }
