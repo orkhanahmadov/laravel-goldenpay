@@ -3,11 +3,11 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Orkhanahmadov\LaravelGoldenpay\Traits\SinglePayable;
+use Orkhanahmadov\LaravelGoldenpay\Traits\Payable;
 
-class FakeSinglePayable extends Model
+class FakePayableModel extends Model
 {
-    use SinglePayable;
+    use Payable;
 
     public $timestamps = false;
 

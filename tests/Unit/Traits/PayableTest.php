@@ -5,33 +5,38 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Unit\Traits;
 use Illuminate\Support\Facades\DB;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
-use Orkhanahmadov\LaravelGoldenpay\Tests\FakeSinglePayable;
+use Orkhanahmadov\LaravelGoldenpay\Tests\FakePayableModel;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
-class SinglePayableTest extends TestCase
+class PayableTest extends TestCase
 {
-    public function testHasOnePayment()
+    public function testHasManyPayments()
     {
-        $model = factory(FakeSinglePayable::class)->create();
-        $payment = factory(Payment::class)->create([
+        $model = factory(FakePayableModel::class)->create();
+        $payment1 = factory(Payment::class)->create([
             'payable_id' => $model->id,
-            'payable_type' => FakeSinglePayable::class
+            'payable_type' => FakePayableModel::class
+        ]);
+        $payment2 = factory(Payment::class)->create([
+            'payable_id' => $model->id,
+            'payable_type' => FakePayableModel::class
         ]);
 
-        $this->assertInstanceOf(Payment::class, $model->payment);
-        $this->assertSame($payment->id, $model->payment->id);
+        $this->assertCount(2, $model->payments);
+        $this->assertSame($payment1->id, $model->payments->first()->id);
+        $this->assertSame($payment2->id, $model->payments->last()->id);
     }
 
     public function testCreatesPayment()
     {
-        /** @var FakeSinglePayable $model */
-        $model = factory(FakeSinglePayable::class)->create(['name' => 'my description']);
+        /** @var FakePayableModel $model */
+        $model = factory(FakePayableModel::class)->create(['name' => 'my description']);
 
         $payment = $model->createPayment(1550, CardType::MASTERCARD());
 
         $this->assertInstanceOf(Payment::class, $payment);
         $this->assertSame($model->id, $payment->payable_id);
-        $this->assertSame(FakeSinglePayable::class, $payment->payable_type);
+        $this->assertSame(FakePayableModel::class, $payment->payable_type);
         $this->assertSame('valid-payment-key', $payment->payment_key);
         $this->assertSame(1550, $payment->amount);
         $this->assertSame('m', $payment->card_type);
@@ -41,13 +46,13 @@ class SinglePayableTest extends TestCase
 
     public function testCreatesPaymentWithCustomDescription()
     {
-        $model = factory(FakeSinglePayable::class)->create(['name' => 'my description']);
+        $model = factory(FakePayableModel::class)->create(['name' => 'my description']);
 
         $payment = $model->createPayment(1550, CardType::MASTERCARD(), 'custom description');
 
         $this->assertInstanceOf(Payment::class, $payment);
         $this->assertSame($model->id, $payment->payable_id);
-        $this->assertSame(FakeSinglePayable::class, $payment->payable_type);
+        $this->assertSame(FakePayableModel::class, $payment->payable_type);
         $this->assertSame('custom description', $payment->description);
     }
 
@@ -55,6 +60,6 @@ class SinglePayableTest extends TestCase
     {
         parent::setUp();
 
-        DB::statement('CREATE TABLE fake_single_payables (id INT, name VARCHAR);');
+        DB::statement('CREATE TABLE fake_payable_models (id INT, name VARCHAR);');
     }
 }

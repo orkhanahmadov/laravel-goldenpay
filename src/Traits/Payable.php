@@ -3,17 +3,17 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Traits;
 
 use Illuminate\Container\Container;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
-trait SinglePayable
+trait Payable
 {
-    public function payment(): MorphOne
+    public function payments(): MorphMany
     {
-        return $this->morphOne(Payment::class, 'payable');
+        return $this->morphMany(Payment::class, 'payable');
     }
 
     /**
