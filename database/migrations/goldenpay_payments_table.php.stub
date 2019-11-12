@@ -15,6 +15,9 @@ class CreateGoldenpayPaymentsTable extends Migration
     {
         Schema::create(config('goldenpay.table_name'), function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('payable_type')->nullable();
+            $table->unsignedBigInteger('payable_id')->nullable();
+            $table->index(['payable_type', 'payable_id']);
             $table->string('payment_key', 36)->index();
             $table->unsignedInteger('amount');
             $table->enum('card_type', CardType::values());
