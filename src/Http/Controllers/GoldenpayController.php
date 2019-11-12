@@ -85,7 +85,7 @@ abstract class GoldenpayController
             );
         }
 
-        $this->dispatcher->dispatch($this->config->get('goldenpay.events.payment_successful'), [$this->payment]);
+        $this->dispatcher->dispatch($event);
     }
 
     /**
