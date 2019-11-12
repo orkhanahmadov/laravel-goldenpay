@@ -47,9 +47,9 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
 
             // Registering package commands.
             // $this->commands([]);
-        }
 
-        $this->registerRoutes();
+            $this->registerTestRoutes();
+        }
     }
 
     /**
@@ -67,10 +67,10 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
     /**
      * Registers package routes.
      */
-    private function registerRoutes(): void
+    private function registerTestRoutes(): void
     {
         if ($this->app->environment('testing')) {
-            Route::get('__goldenpay-fake-test-route__', [FakeResultController::class, 'successful']);
+            Route::get('__goldenpay-fake-test-route__', [FakeResultController::class, 'index']);
         }
     }
 }

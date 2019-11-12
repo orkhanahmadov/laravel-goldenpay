@@ -7,12 +7,7 @@ use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController;
 
 class FakeResultController extends GoldenpayController
 {
-    public function successful()
-    {
-        return response()->noContent(Response::HTTP_OK);
-    }
-
-    public function failed()
+    public function index()
     {
         return response()->noContent(Response::HTTP_OK);
     }
