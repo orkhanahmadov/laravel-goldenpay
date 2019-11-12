@@ -4,12 +4,15 @@ namespace Orkhanahmadov\LaravelGoldenpay\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 
 /**
  * Class Payment
  * @package Orkhanahmadov\LaravelGoldenpay\Models
  *
  * @property int $id
+ * @property string $payable_type
+ * @property int $payable_id
  * @property string $payment_key
  * @property int $amount
  * @property string $card_type
@@ -23,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $checks
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read string $payment_url
  * @property-read float|int $formatted_amount
  * @property-read bool $successful
  * @method static Payment first()
@@ -56,6 +60,11 @@ class Payment extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('goldenpay.table_name'));
+    }
+
+    public function getPaymentUrlAttribute(): string
+    {
+        return PaymentKey::PAYMENT_PAGE.$this->payment_key;
     }
 
     public function getSuccessfulAttribute(): bool

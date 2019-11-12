@@ -2,11 +2,21 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Unit\Models;
 
+use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
 class PaymentTest extends TestCase
 {
+    public function testPaymentUrlAttribute()
+    {
+        $payment = factory(Payment::class)->create(['payment_key' => 'new_payment_key']);
+
+        $expected = PaymentKey::PAYMENT_PAGE.'new_payment_key';
+
+        $this->assertSame($expected, $payment->payment_url);
+    }
+
     public function testFormattedAmountAttribute()
     {
         $payment = factory(Payment::class)->create(['amount' => 1569]);

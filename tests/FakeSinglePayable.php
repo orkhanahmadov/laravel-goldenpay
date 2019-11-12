@@ -10,4 +10,14 @@ class FakeSinglePayable extends Model
     use SinglePayable;
 
     public $timestamps = false;
+
+    /**
+     * Define description for this model's payments.
+     *
+     * @return string
+     */
+    public function description(): string
+    {
+        return $this->name;
+    }
 }
