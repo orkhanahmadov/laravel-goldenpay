@@ -2,7 +2,6 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\PaymentInterface;

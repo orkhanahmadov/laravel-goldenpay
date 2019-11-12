@@ -37,6 +37,15 @@ class GoldenpayTest extends TestCase
         $this->assertEquals('ru', Payment::first()->language);
     }
 
+    public function testLanguageDefaultsToEnglishIfApplicationLocateIsNotSupported()
+    {
+        $this->app->setLocale('es');
+
+        $this->goldenpay->payment(100, CardType::MASTERCARD(), 'something');
+
+        $this->assertEquals('en', Payment::first()->language);
+    }
+
     public function testResultWithPaymentInstance()
     {
         $payment = $this->goldenpay->payment(2560, CardType::VISA(), 'some item', Language::AZ());
