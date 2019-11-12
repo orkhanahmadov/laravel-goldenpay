@@ -8,6 +8,7 @@ use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
+use Orkhanahmadov\LaravelGoldenpay\Actions\PaymentEvent;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 class Goldenpay
@@ -16,6 +17,10 @@ class Goldenpay
      * @var Application
      */
     private $application;
+    /**
+     * @var PaymentEvent
+     */
+    private $event;
     /**
      * @var Library
      */
@@ -26,11 +31,17 @@ class Goldenpay
      *
      * @param Application $application
      * @param Repository $config
+     * @param PaymentEvent $event
      * @param PaymentInterface $goldenpay
      */
-    public function __construct(Application $application, Repository $config, PaymentInterface $goldenpay)
-    {
+    public function __construct(
+        Application $application,
+        Repository $config,
+        PaymentEvent $event,
+        PaymentInterface $goldenpay
+    ) {
         $this->application = $application;
+        $this->event = $event;
         $this->goldenpay = $goldenpay;
 
         $this->goldenpay = $goldenpay->auth(
@@ -84,6 +95,8 @@ class Goldenpay
         $payment->payment_date = $result->getPaymentDate();
         $payment->checks = $result->getCheckCount();
         $payment->save();
+
+        $this->event->execute('goldenpay.events.payment_checked', $payment);
 
         return $payment;
     }

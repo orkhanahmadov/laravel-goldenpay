@@ -4,6 +4,7 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Event;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
@@ -80,7 +81,13 @@ class GoldenpayTest extends TestCase
 
     public function testResultMethodFiresPaymentCheckedEvent()
     {
-        $this->markTestIncomplete();
+        $payment = factory(Payment::class)->create();
+
+        $result = $this->goldenpay->result($payment);
+
+        Event::assertDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($result) {
+            return $event->payment->id === $result->id;
+        });
     }
 
     public function testThrowsModelNotFoundExceptionIfPaymentKeyDoesNotExist()

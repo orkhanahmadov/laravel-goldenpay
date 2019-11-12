@@ -4,6 +4,7 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Event;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
@@ -22,7 +23,10 @@ class ResultCommandTest extends TestCase
         $this->assertSame(1, $payment2->refresh()->status);
         $this->assertSame(1, $payment3->refresh()->status);
         $this->assertNull($payment4->refresh()->status);
-        // todo: event count
+        Event::assertDispatched(config('goldenpay.events.payment_checked'), 2);
+        Event::assertNotDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($payment3) {
+            return $event->payment->id === $payment3->id;
+        });
     }
 
     public function testChecksGivenPaymentWithPaymentKey()

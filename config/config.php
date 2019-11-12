@@ -68,6 +68,7 @@ return [
     */
 
     'events' => [
+        'payment_checked' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent::class,
         'payment_successful' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent::class,
         'payment_failed' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentFailedEvent::class,
     ],
