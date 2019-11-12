@@ -56,8 +56,6 @@ class Goldenpay
         $paymentKey = $this->goldenpay->payment($amount, $cardType, $description, $lang);
 
         return Payment::create([
-            'status' => $paymentKey->getCode(),
-            'message' => $paymentKey->getMessage(),
             'payment_key' => $paymentKey->getPaymentKey(),
             'amount' => $amount,
             'card_type' => $cardType->getValue(),

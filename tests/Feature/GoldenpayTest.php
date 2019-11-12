@@ -20,12 +20,13 @@ class GoldenpayTest extends TestCase
         /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::payment() */
         $this->assertCount(1, Payment::all());
         $this->assertInstanceOf(Payment::class, $payment);
+        $this->assertNull($payment->status);
+        $this->assertNull($payment->message);
         $this->assertSame('valid-payment-key', $payment->payment_key);
         $this->assertSame(100, $payment->amount);
         $this->assertSame('m', $payment->card_type);
         $this->assertSame('en', $payment->language);
         $this->assertSame('item description', $payment->description);
-        $this->assertSame(1, $payment->status);
         $this->assertEquals(0, $payment->checks);
     }
 

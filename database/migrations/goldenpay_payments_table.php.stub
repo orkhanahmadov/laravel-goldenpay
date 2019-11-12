@@ -20,8 +20,8 @@ class CreateGoldenpayPaymentsTable extends Migration
             $table->enum('card_type', CardType::values());
             $table->enum('language', Language::values());
             $table->string('description');
-            $table->integer('status');
-            $table->string('message');
+            $table->integer('status')->nullable();
+            $table->string('message')->nullable();
             $table->string('reference_number')->nullable();
             $table->string('card_number', 16)->nullable();
             $table->timestamp('payment_date')->nullable();

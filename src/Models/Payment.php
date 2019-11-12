@@ -27,7 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Payment extends Model
 {
-    protected $guarded = [];
+    protected $guarded = [
+        'status',
+    ];
 
     protected $dates = [
         'payment_date',
