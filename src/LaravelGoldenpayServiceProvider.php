@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
-use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\FailedPaymentController;
-use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\SuccessfulPaymentController;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider

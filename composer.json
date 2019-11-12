@@ -18,6 +18,7 @@
     "require": {
         "php": "^7.2",
         "illuminate/database": "5.8.*|^6.0",
+        "illuminate/http": "5.8.*|^6.0",
         "illuminate/support": "5.8.*|^6.0",
         "orkhanahmadov/goldenpay": "dev-develop"
     },

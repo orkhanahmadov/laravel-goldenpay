@@ -5,8 +5,8 @@ namespace Orkhanahmadov\LaravelGoldenpay\Http\Controllers;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\Request;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
+use Orkhanahmadov\LaravelGoldenpay\Http\Requests\Request;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 abstract class GoldenpayController
@@ -38,8 +38,8 @@ abstract class GoldenpayController
      * @param Application $application
      * @param Repository $config
      * @param Request $request
-     * @param Goldenpay $goldenpay
      * @param Dispatcher $dispatcher
+     * @param Goldenpay $goldenpay
      */
     public function __construct(
         Application $application,
