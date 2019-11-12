@@ -4,6 +4,7 @@ namespace Orkhanahmadov\LaravelGoldenpay\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 
 /**
@@ -30,6 +31,7 @@ use Orkhanahmadov\Goldenpay\Response\PaymentKey;
  * @property-read float|int $formatted_amount
  * @property-read bool $successful
  * @method static Payment first()
+ * @method static Builder successful()
  * @method static Builder pending()
  */
 class Payment extends Model
@@ -52,14 +54,20 @@ class Payment extends Model
         'checks' => 'int',
     ];
 
-    public const PAYMENT_STATUS_CODE_SUCCESSFUL = 1;
-    public const PAYMENT_MINIMUM_CHECKS_UNLESS_SUCCESSFUL = 5;
+    public const STATUS_SUCCESSFUL = 1;
+
+    public const MINIMUM_REQUIRED_CHECKS = 5;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
         $this->setTable(config('goldenpay.table_name'));
+    }
+
+    public function payable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     public function getPaymentUrlAttribute(): string
@@ -69,7 +77,7 @@ class Payment extends Model
 
     public function getSuccessfulAttribute(): bool
     {
-        return $this->status === self::PAYMENT_STATUS_CODE_SUCCESSFUL;
+        return $this->status === self::STATUS_SUCCESSFUL;
     }
 
     public function getFormattedAmountAttribute()
@@ -77,15 +85,20 @@ class Payment extends Model
         return $this->amount / 100;
     }
 
+    public function scopeSuccessful(Builder $builder): Builder
+    {
+        return $builder->whereStatus(self::STATUS_SUCCESSFUL);
+    }
+
     public function scopePending(Builder $builder): Builder
     {
         return $builder
             ->where(function (Builder $query) {
                 $query->whereNull('status')
-                    ->orWhere('status', '<>', self::PAYMENT_STATUS_CODE_SUCCESSFUL);
+                    ->orWhere('status', '<>', self::STATUS_SUCCESSFUL);
             })
             ->where(function (Builder $query) {
-                $query->where('checks', '<', self::PAYMENT_MINIMUM_CHECKS_UNLESS_SUCCESSFUL)
+                $query->where('checks', '<', self::MINIMUM_REQUIRED_CHECKS)
                     ->orWhere('created_at', '>=', now()->subMinutes(30));
             });
     }

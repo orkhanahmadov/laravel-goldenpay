@@ -4,10 +4,23 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Unit\Models;
 
 use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
+use Orkhanahmadov\LaravelGoldenpay\Tests\FakePayableModel;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
 class PaymentTest extends TestCase
 {
+    public function testBelongsToPayable()
+    {
+        $model = factory(FakePayableModel::class)->create();
+        $payment = factory(Payment::class)->create([
+            'payable_type' => FakePayableModel::class,
+            'payable_id' => $model->id,
+        ]);
+
+        $this->assertInstanceOf(FakePayableModel::class, $payment->payable);
+        $this->assertSame($model->id, $payment->payable->id);
+    }
+
     public function testPaymentUrlAttribute()
     {
         $payment = factory(Payment::class)->create(['payment_key' => 'new_payment_key']);
@@ -52,5 +65,18 @@ class PaymentTest extends TestCase
         $this->assertFalse($payments->contains($successfulPayment));
         $this->assertFalse($payments->contains($finishedPayment));
         $this->assertFalse($payments->contains($manyCheckedPayment));
+    }
+
+    public function testSuccessfulScope()
+    {
+        $successfulPayment = factory(Payment::class)->create(['status' => 1]);
+        $failedPayment1 = factory(Payment::class)->create(['status' => 5]);
+        $failedPayment2 = factory(Payment::class)->create(['status' => null]);
+
+        $payments = Payment::successful()->get();
+
+        $this->assertTrue($payments->contains($successfulPayment));
+        $this->assertFalse($payments->contains($failedPayment1));
+        $this->assertFalse($payments->contains($failedPayment2));
     }
 }

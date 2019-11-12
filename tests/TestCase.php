@@ -2,6 +2,7 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
@@ -36,6 +37,8 @@ class TestCase extends Orchestra
     {
         include_once __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub';
         (new \CreateGoldenpayPaymentsTable())->up();
+
+        DB::statement('CREATE TABLE fake_payable_models (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR);');
     }
 
     protected function setUp(): void

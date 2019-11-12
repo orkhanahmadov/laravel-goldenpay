@@ -16,6 +16,11 @@ trait Payable
         return $this->morphMany(Payment::class, 'payable');
     }
 
+    public function successfulPayments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'payable')->successful();
+    }
+
     /**
      * @param int $amount
      * @param CardType $cardType

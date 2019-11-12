@@ -2,7 +2,6 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Unit\Traits;
 
-use Illuminate\Support\Facades\DB;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\FakePayableModel;
@@ -25,6 +24,29 @@ class PayableTest extends TestCase
         $this->assertCount(2, $model->payments);
         $this->assertSame($payment1->id, $model->payments->first()->id);
         $this->assertSame($payment2->id, $model->payments->last()->id);
+    }
+
+    public function testHasManySuccessfulPayments()
+    {
+        $model = factory(FakePayableModel::class)->create();
+        $successfulPayment = factory(Payment::class)->create([
+            'payable_id' => $model->id,
+            'payable_type' => FakePayableModel::class,
+            'status' => 1,
+        ]);
+        factory(Payment::class)->create([
+            'payable_id' => $model->id,
+            'payable_type' => FakePayableModel::class,
+            'status' => null,
+        ]);
+        factory(Payment::class)->create([
+            'payable_id' => $model->id,
+            'payable_type' => FakePayableModel::class,
+            'status' => 5,
+        ]);
+
+        $this->assertCount(1, $model->successfulPayments);
+        $this->assertSame($successfulPayment->id, $model->successfulPayments->first()->id);
     }
 
     public function testCreatesPayment()
@@ -54,12 +76,5 @@ class PayableTest extends TestCase
         $this->assertSame($model->id, $payment->payable_id);
         $this->assertSame(FakePayableModel::class, $payment->payable_type);
         $this->assertSame('custom description', $payment->description);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        DB::statement('CREATE TABLE fake_payable_models (id INT, name VARCHAR);');
     }
 }
