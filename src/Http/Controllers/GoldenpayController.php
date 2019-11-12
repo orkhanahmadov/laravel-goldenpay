@@ -5,16 +5,13 @@ namespace Orkhanahmadov\LaravelGoldenpay\Http\Controllers;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
+use Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Http\Requests\Request;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 abstract class GoldenpayController
 {
-    /**
-     * @var Application
-     */
-    protected $application;
     /**
      * @var Repository
      */
@@ -35,20 +32,17 @@ abstract class GoldenpayController
     /**
      * Controller constructor.
      *
-     * @param Application $application
      * @param Repository $config
      * @param Request $request
      * @param Dispatcher $dispatcher
      * @param Goldenpay $goldenpay
      */
     public function __construct(
-        Application $application,
         Repository $config,
         Request $request,
         Dispatcher $dispatcher,
         Goldenpay $goldenpay
     ) {
-        $this->application = $application;
         $this->config = $config;
         $this->dispatcher = $dispatcher;
         $this->goldenpay = $goldenpay;
@@ -74,18 +68,12 @@ abstract class GoldenpayController
     private function fireEvent(): void
     {
         if ($this->paymentSuccessful()) {
-            $event = $this->application->make(
-                $this->config->get('goldenpay.events.payment_successful'),
-                [$this->payment]
-            );
+            $event = $this->config->get('goldenpay.events.payment_successful');
         } else {
-            $event = $this->application->make(
-                $this->config->get('goldenpay.events.payment_failed'),
-                [$this->payment]
-            );
+            $event = $this->config->get('goldenpay.events.payment_failed');
         }
 
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->dispatch(new $event($this->payment));
     }
 
     /**

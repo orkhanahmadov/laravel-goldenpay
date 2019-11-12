@@ -28,8 +28,6 @@ class PaymentResultTest extends TestCase
         $this->assertSame('123456******7890', $payment->card_number);
         $this->assertSame('12345678', $payment->reference_number);
         Event::assertDispatched(config('goldenpay.events.payment_successful'), function ($event) use ($payment) {
-            dd($event);
-
             return $event->payment->id === $payment->id && $event->payment->status === 1;
         });
         Event::assertNotDispatched(config('goldenpay.events.payment_failed'));

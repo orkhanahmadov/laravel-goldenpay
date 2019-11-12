@@ -12,6 +12,7 @@ abstract class PaymentEvent
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     /**
      * @var Payment
      */
