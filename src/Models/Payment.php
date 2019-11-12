@@ -49,7 +49,7 @@ class Payment extends Model
     ];
 
     public const PAYMENT_STATUS_CODE_SUCCESSFUL = 1;
-    public const PAYMENT_MINIMUM_CHECK_COUNT_UNLESS_SUCCESSFUL = 5;
+    public const PAYMENT_MINIMUM_CHECKS_UNLESS_SUCCESSFUL = 5;
 
     public function __construct(array $attributes = [])
     {
@@ -76,21 +76,8 @@ class Payment extends Model
                     ->orWhere('status', '<>', self::PAYMENT_STATUS_CODE_SUCCESSFUL);
             })
             ->where(function (Builder $query) {
-                $query->where('checks', '<', self::PAYMENT_MINIMUM_CHECK_COUNT_UNLESS_SUCCESSFUL)
-                    ->orWhere('created_at', '>', now()->subMinutes(30));
+                $query->where('checks', '<', self::PAYMENT_MINIMUM_CHECKS_UNLESS_SUCCESSFUL)
+                    ->orWhere('created_at', '>=', now()->subMinutes(30));
             });
-
-//        return $builder
-//            ->where(function (Builder $query) {
-//                $query->whereNull('status')
-//                    ->orWhere('status', '<>', self::PAYMENT_STATUS_CODE_SUCCESSFUL);
-//            })
-//            ->where(function (Builder $query) {
-//                $query->where('checks', '<', self::PAYMENT_MINIMUM_CHECK_COUNT_UNLESS_SUCCESSFUL);
-//            })
-//            ->orWhere(function (Builder $query) {
-//                $query->where('checks', '>=', self::PAYMENT_MINIMUM_CHECK_COUNT_UNLESS_SUCCESSFUL)
-//                    ->orWhere('created_at', '>', now()->subMinutes(30));
-//            });
     }
 }
