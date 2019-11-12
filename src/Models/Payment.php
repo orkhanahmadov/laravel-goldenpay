@@ -68,9 +68,9 @@ class Payment extends Model
     public function scopePending(Builder $builder): Builder
     {
         return $builder
-            ->where(function ($query) {
+            ->where('created_at', '>', now()->subMinutes(30))
+            ->where(function (Builder $query) {
                 $query->whereNull('status')->orWhereNotIn('status', [1]);
-            })
-            ->where('created_at', '>', now()->subMinutes(30));
+            });
     }
 }
