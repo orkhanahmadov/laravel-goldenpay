@@ -31,6 +31,15 @@ class GoldenpayTest extends TestCase
         $this->assertEquals(0, $payment->checks);
     }
 
+    public function testPaymentMethodFiresPaymentCreatedEvent()
+    {
+        $payment = $this->goldenpay->payment(100, CardType::MASTERCARD(), 'whatever');
+
+        Event::assertDispatched(config('goldenpay.events.payment_created'), function ($event) use ($payment) {
+            return $event->payment->id === $payment->id;
+        });
+    }
+
     public function testCreatesPaymentMethodWithDefinedLanguage()
     {
         $this->goldenpay->payment(100, CardType::MASTERCARD(), 'something', Language::RU());

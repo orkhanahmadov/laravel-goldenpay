@@ -66,13 +66,17 @@ class Goldenpay
 
         $paymentKey = $this->goldenpay->payment($amount, $cardType, $description, $lang);
 
-        return Payment::create([
+        $payment = Payment::create([
             'payment_key' => $paymentKey->getPaymentKey(),
             'amount' => $amount,
             'card_type' => $cardType->getValue(),
             'language' => $lang->getValue(),
             'description' => $description,
         ]);
+
+        $this->event->execute('goldenpay.events.payment_created', $payment);
+
+        return $payment;
     }
 
     /**
