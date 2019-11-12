@@ -37,13 +37,18 @@ class SinglePayableTest extends TestCase
         $this->assertSame('m', $payment->card_type);
         $this->assertSame('my description', $payment->description);
         $this->assertSame('en', $payment->language);
-
-//        $this->markTestIncomplete();
     }
 
     public function testCreatesPaymentWithCustomDescription()
     {
-        $this->markTestIncomplete();
+        $model = factory(FakeSinglePayable::class)->create(['name' => 'my description']);
+
+        $payment = $model->createPayment(1550, CardType::MASTERCARD(), 'custom description');
+
+        $this->assertInstanceOf(Payment::class, $payment);
+        $this->assertSame($model->id, $payment->payable_id);
+        $this->assertSame(FakeSinglePayable::class, $payment->payable_type);
+        $this->assertSame('custom description', $payment->description);
     }
 
     protected function setUp(): void
