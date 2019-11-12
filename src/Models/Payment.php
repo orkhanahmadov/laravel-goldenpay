@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read float|int $formatted_amount
+ * @property-read bool $successful
  * @method static Payment first()
  */
 class Payment extends Model
@@ -50,6 +51,11 @@ class Payment extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('goldenpay.table_name'));
+    }
+
+    public function getSuccessfulAttribute(): bool
+    {
+        return $this->status === 1;
     }
 
     public function getFormattedAmountAttribute()

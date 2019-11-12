@@ -83,6 +83,6 @@ abstract class GoldenpayController
      */
     protected function paymentSuccessful(): bool
     {
-        return $this->payment->status === 1;
+        return $this->payment->successful;
     }
 }

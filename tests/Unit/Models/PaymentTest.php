@@ -13,4 +13,13 @@ class PaymentTest extends TestCase
 
         $this->assertSame(15.69, $payment->formatted_amount);
     }
+
+    public function testSuccessfulAttribute()
+    {
+        $successfulPayment = factory(Payment::class)->create(['status' => 1]);
+        $this->assertTrue($successfulPayment->successful);
+
+        $failedPayment = factory(Payment::class)->create(['status' => 2]);
+        $this->assertFalse($failedPayment->successful);
+    }
 }
