@@ -33,7 +33,7 @@ class FakePaymentLibrary implements PaymentInterface
      *
      * @return PaymentKey
      */
-    public function paymentKey(int $amount, CardType $cardType, string $description, ?Language $lang): PaymentKey
+    public function payment(int $amount, CardType $cardType, string $description, ?Language $lang): PaymentKey
     {
         return new PaymentKey(1, 'success', 'valid-payment-key');
     }
@@ -45,7 +45,7 @@ class FakePaymentLibrary implements PaymentInterface
      *
      * @return PaymentResult
      */
-    public function paymentResult($paymentKey): PaymentResult
+    public function result($paymentKey): PaymentResult
     {
         return new PaymentResult([
             'status' => [

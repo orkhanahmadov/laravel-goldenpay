@@ -9,6 +9,11 @@ use Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider;
 
 class TestCase extends Orchestra
 {
+    /**
+     * @var Goldenpay
+     */
+    protected $goldenpay;
+
     protected function getPackageProviders($app)
     {
         return [
@@ -40,5 +45,6 @@ class TestCase extends Orchestra
         $this->withFactories(__DIR__.'/../database/factories');
 
         $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
+        $this->goldenpay = $this->app->make(\Orkhanahmadov\LaravelGoldenpay\Goldenpay::class);
     }
 }
