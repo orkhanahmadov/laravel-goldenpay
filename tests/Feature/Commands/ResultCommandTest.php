@@ -3,6 +3,7 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature\Commands;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
@@ -10,7 +11,18 @@ class ResultCommandTest extends TestCase
 {
     public function testChecksAllPendingPaymentsIfPaymentKeyNotPassed()
     {
-        $this->markTestIncomplete();
+        $payment1 = factory(Payment::class)->create(['created_at' => now()->subMinutes(10)]);
+        $payment2 = factory(Payment::class)->create(['created_at' => now()->subMinutes(12)]);
+        $payment3 = factory(Payment::class)->create(['status' => 1, 'created_at' => now()->subMinutes(5)]);
+        $payment4 = factory(Payment::class)->create(['created_at' => now()->subMinutes(45)]);
+
+        $this->artisan('goldenpay:result');
+
+        $this->assertSame(1, $payment1->refresh()->status);
+        $this->assertSame(1, $payment2->refresh()->status);
+        $this->assertSame(1, $payment3->refresh()->status);
+        $this->assertNull($payment4->refresh()->status);
+        // todo: event count
     }
 
     public function testChecksGivenPaymentWithPaymentKey()
@@ -33,6 +45,9 @@ class ResultCommandTest extends TestCase
 
     public function testThrowsModelNotFoundExceptionIfNonExistingPaymentKeyPassed()
     {
-        $this->markTestIncomplete();
+        $this->expectException(ModelNotFoundException::class);
+        $this->expectExceptionMessage('No query results for model [Orkhanahmadov\LaravelGoldenpay\Models\Payment].');
+
+        $this->artisan('goldenpay:result ABC-123');
     }
 }

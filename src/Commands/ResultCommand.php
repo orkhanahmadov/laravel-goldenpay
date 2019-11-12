@@ -29,8 +29,15 @@ class ResultCommand extends Command
      */
     public function handle(Goldenpay $goldenpay): void
     {
-        $payment = Payment::wherePaymentKey($this->argument('paymentKey'))->firstOrFail();
+        if ($paymentKey = $this->argument('paymentKey')) {
+            $payment = Payment::wherePaymentKey($paymentKey)->firstOrFail();
 
-        $goldenpay->result($payment);
+            $goldenpay->result($payment);
+            return;
+        }
+
+        foreach (Payment::pending()->cursor() as $payment) {
+            $goldenpay->result($payment);
+        }
     }
 }
