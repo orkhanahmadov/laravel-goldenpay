@@ -4,17 +4,17 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Unit\Traits;
 
 use Illuminate\Support\Facades\DB;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
-use Orkhanahmadov\LaravelGoldenpay\Tests\FakeModel;
+use Orkhanahmadov\LaravelGoldenpay\Tests\FakeSinglePayable;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
 class SinglePayableTest extends TestCase
 {
     public function testHasOnePayment()
     {
-        $model = factory(FakeModel::class)->create();
+        $model = factory(FakeSinglePayable::class)->create();
         $payment = factory(Payment::class)->create([
             'payable_id' => $model->id,
-            'payable_type' => FakeModel::class
+            'payable_type' => FakeSinglePayable::class
         ]);
 
         $this->assertInstanceOf(Payment::class, $model->payment);
@@ -30,6 +30,6 @@ class SinglePayableTest extends TestCase
     {
         parent::setUp();
 
-        DB::statement('CREATE TABLE fake_models (id INT, name VARCHAR);');
+        DB::statement('CREATE TABLE fake_single_payables (id INT, name VARCHAR);');
     }
 }
