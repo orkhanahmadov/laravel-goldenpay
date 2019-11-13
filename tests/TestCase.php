@@ -35,7 +35,7 @@ class TestCase extends Orchestra
      */
     protected function setUpDatabase()
     {
-        include_once __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub';
+        include_once __DIR__.'/../database/migrations/goldenpay_payments_table.php.stub';
         (new \CreateGoldenpayPaymentsTable())->up();
 
         DB::statement('CREATE TABLE fake_payable_models (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR);');

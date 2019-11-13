@@ -14,11 +14,11 @@ class PayableTest extends TestCase
         $model = factory(FakePayableModel::class)->create();
         $payment1 = factory(Payment::class)->create([
             'payable_id' => $model->id,
-            'payable_type' => FakePayableModel::class
+            'payable_type' => FakePayableModel::class,
         ]);
         $payment2 = factory(Payment::class)->create([
             'payable_id' => $model->id,
-            'payable_type' => FakePayableModel::class
+            'payable_type' => FakePayableModel::class,
         ]);
 
         $this->assertCount(2, $model->payments);
