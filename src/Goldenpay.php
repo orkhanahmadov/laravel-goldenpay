@@ -59,7 +59,7 @@ class Goldenpay
         $authKey = $this->config->get('goldenpay.auth_key');
         $merchantName = $this->config->get('goldenpay.merchant_name');
 
-        if (!$authKey || !$merchantName) {
+        if (! $authKey || ! $merchantName) {
             throw new \InvalidArgumentException(
                 'Missing "auth_key" and/or "merchant_name" parameters. Make sure to set them in config or .env file.'
             );
