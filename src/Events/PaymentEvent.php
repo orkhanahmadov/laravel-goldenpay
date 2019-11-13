@@ -2,9 +2,9 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Events;
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 abstract class PaymentEvent

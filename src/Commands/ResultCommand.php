@@ -33,6 +33,7 @@ class ResultCommand extends Command
             $payment = Payment::wherePaymentKey($paymentKey)->firstOrFail();
 
             $goldenpay->result($payment);
+
             return;
         }
 

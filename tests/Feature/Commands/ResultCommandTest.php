@@ -42,7 +42,7 @@ class ResultCommandTest extends TestCase
         $this->artisan('goldenpay:result ABC-123');
 
         $payment->refresh();
-        /** @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::result() */
+        /* @see \Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary::result() */
         $this->assertSame(1, $payment->status);
         $this->assertSame('success', $payment->message);
         $this->assertSame(1, $payment->checks);

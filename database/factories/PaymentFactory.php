@@ -5,7 +5,7 @@ use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(Payment::class, function (Faker $faker) {
     return [
         'payment_key' => $faker->uuid,

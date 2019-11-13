@@ -2,7 +2,6 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature\Http;
 
-use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\ValidationException;
