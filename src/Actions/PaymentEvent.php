@@ -37,7 +37,7 @@ class PaymentEvent
     {
         $event = $this->config->get($name);
 
-        if ($this->enabled) {
+        if ($event && $this->enabled) {
             $event::dispatch($payment);
         }
     }

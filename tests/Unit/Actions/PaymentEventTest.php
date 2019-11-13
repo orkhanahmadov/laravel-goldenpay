@@ -40,7 +40,11 @@ class PaymentEventTest extends TestCase
 
     public function testWontFireSpecificEventIfItSetToNullInConfig()
     {
-        $this->markTestIncomplete();
+        Config::set('goldenpay.events.payment_created', null);
+
+        $this->action->execute('goldenpay.events.payment_created', $this->payment);
+
+        Event::assertNotDispatched(config('goldenpay.events.payment_created'));
     }
 
     public function testThrowsExceptionIfEventIsNotInstanceOfPaymentEvent()
