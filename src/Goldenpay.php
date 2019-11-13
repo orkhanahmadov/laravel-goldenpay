@@ -45,8 +45,8 @@ class Goldenpay
         $this->goldenpay = $goldenpay;
 
         $this->goldenpay = $goldenpay->auth(
-            $config->get('goldenpay.auth_key'),
-            $config->get('goldenpay.merchant_name')
+            $config->get('goldenpay.auth_key', ''),
+            $config->get('goldenpay.merchant_name', '')
         );
     }
 
