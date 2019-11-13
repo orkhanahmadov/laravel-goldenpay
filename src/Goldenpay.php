@@ -6,7 +6,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
-use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\LaravelGoldenpay\Actions\PaymentEvent;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
@@ -26,7 +25,7 @@ class Goldenpay
      */
     private $event;
     /**
-     * @var Library
+     * @var PaymentInterface
      */
     private $goldenpay;
 
