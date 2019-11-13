@@ -17,8 +17,12 @@
     ],
     "require": {
         "php": "^7.2",
+        "illuminate/broadcasting": "5.8.*|^6.0",
+        "illuminate/contracts": "5.8.*|^6.0",
+        "illuminate/console": "5.8.*|^6.0",
         "illuminate/database": "5.8.*|^6.0",
         "illuminate/http": "5.8.*|^6.0",
+        "illuminate/queue": "5.8.*|^6.0",
         "illuminate/support": "5.8.*|^6.0",
         "orkhanahmadov/goldenpay": "dev-master"
     },

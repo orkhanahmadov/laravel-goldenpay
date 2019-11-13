@@ -18,6 +18,10 @@ class Goldenpay
      */
     private $application;
     /**
+     * @var Repository
+     */
+    private $config;
+    /**
      * @var PaymentEvent
      */
     private $event;
@@ -41,16 +45,33 @@ class Goldenpay
         PaymentInterface $goldenpay
     ) {
         $this->application = $application;
+        $this->config = $config;
         $this->event = $event;
         $this->goldenpay = $goldenpay;
-
-        $this->goldenpay = $goldenpay->auth(
-            $config->get('goldenpay.auth_key', ''),
-            $config->get('goldenpay.merchant_name', '')
-        );
     }
 
     /**
+     * Authenticates with Goldenpay using configured "auth_key" and "merchant_name".
+     *
+     * @return PaymentInterface
+     */
+    private function authenticate(): PaymentInterface
+    {
+        $authKey = $this->config->get('goldenpay.auth_key');
+        $merchantName = $this->config->get('goldenpay.merchant_name');
+
+        if (!$authKey || !$merchantName) {
+            throw new \InvalidArgumentException(
+                'Missing "auth_key" and/or "merchant_name" parameters. Make sure to set them in config or .env file.'
+            );
+        }
+
+        return $this->goldenpay->authenticate($authKey, $merchantName);
+    }
+
+    /**
+     * Creates new payment base on passed credentials.
+     *
      * @param int $amount
      * @param CardType $cardType
      * @param string $description
@@ -64,7 +85,7 @@ class Goldenpay
     {
         $lang = $lang ?: $this->languageFromLocale();
 
-        $paymentKey = $this->goldenpay->payment($amount, $cardType, $description, $lang);
+        $paymentKey = $this->authenticate()->payment($amount, $cardType, $description, $lang);
 
         $payment = Payment::create([
             'payment_key' => $paymentKey->getPaymentKey(),
@@ -80,6 +101,8 @@ class Goldenpay
     }
 
     /**
+     * Checks payment result with given payment_key or Payment instance.
+     *
      * @param Payment|string $payment
      *
      * @return Payment
@@ -90,7 +113,7 @@ class Goldenpay
             $payment = Payment::wherePaymentKey($payment)->firstOrFail();
         }
 
-        $result = $this->goldenpay->result($payment->payment_key);
+        $result = $this->authenticate()->result($payment->payment_key);
 
         $payment->status = $result->getCode();
         $payment->message = $result->getMessage();

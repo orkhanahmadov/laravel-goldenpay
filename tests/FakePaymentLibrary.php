@@ -45,7 +45,7 @@ class FakePaymentLibrary implements PaymentInterface
      *
      * @return self
      */
-    public function auth(string $authKey, string $merchantName): PaymentInterface
+    public function authenticate(string $authKey, string $merchantName): PaymentInterface
     {
         return $this;
     }

@@ -4,6 +4,7 @@ namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
@@ -132,5 +133,17 @@ class GoldenpayTest extends TestCase
         $this->expectExceptionMessage('No query results for model [Orkhanahmadov\LaravelGoldenpay\Models\Payment].');
 
         $this->goldenpay->result('non-existing-payment-key');
+    }
+
+    public function testThrowsInvalidArgumentExceptionIfAuthKeyOrMerchantNameIsNotSet()
+    {
+        Config::set('goldenpay.auth_key', null);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing "auth_key" and/or "merchant_name" parameters. Make sure to set them in config or .env file'
+        );
+
+        $this->goldenpay->payment(100, CardType::VISA(), 'whatever');
     }
 }
