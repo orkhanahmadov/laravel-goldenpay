@@ -22,7 +22,6 @@ abstract class GoldenpayController
      */
     protected $payment;
 
-
     /**
      * Controller constructor.
      *

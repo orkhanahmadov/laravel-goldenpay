@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 
 /**
- * Class Payment
- * @package Orkhanahmadov\LaravelGoldenpay\Models
+ * Class Payment.
  *
  * @property int $id
  * @property string $payable_type

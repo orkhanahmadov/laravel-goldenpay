@@ -3,8 +3,8 @@
 namespace Orkhanahmadov\LaravelGoldenpay;
 
 use Illuminate\Support\ServiceProvider;
-use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
+use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\LaravelGoldenpay\Commands\ResultCommand;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
@@ -23,8 +23,7 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
 
             if (! class_exists('CreateGoldenpayPaymentsTable')) {
                 $this->publishes([
-                    __DIR__.'/../database/migrations/goldenpay_payments_table.php.stub' =>
-                        database_path('migrations/'.date('Y_m_d_His').'_create_goldenpay_payments_table.php'),
+                    __DIR__.'/../database/migrations/goldenpay_payments_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_goldenpay_payments_table.php'),
                 ], 'migrations');
             }
 
