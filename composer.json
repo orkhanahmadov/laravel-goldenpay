@@ -20,7 +20,7 @@
         "illuminate/database": "5.8.*|^6.0",
         "illuminate/http": "5.8.*|^6.0",
         "illuminate/support": "5.8.*|^6.0",
-        "orkhanahmadov/goldenpay": "dev-develop"
+        "orkhanahmadov/goldenpay": "dev-master"
     },
     "require-dev": {
         "orchestra/testbench": "3.8.*|^4.0",
