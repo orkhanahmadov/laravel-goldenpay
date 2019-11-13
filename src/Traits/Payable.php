@@ -3,19 +3,35 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Traits;
 
 use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
+/**
+ * Trait Payable
+ *
+ * @mixin Model
+ */
 trait Payable
 {
+    /**
+     * Returns all related payments.
+     *
+     * @return MorphMany
+     */
     public function payments(): MorphMany
     {
         return $this->morphMany(Payment::class, 'payable');
     }
 
+    /**
+     * Returns all related successful payments.
+     *
+     * @return MorphMany
+     */
     public function successfulPayments(): MorphMany
     {
         return $this->morphMany(Payment::class, 'payable')->successful();

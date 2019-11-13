@@ -21,13 +21,20 @@ class PaymentTest extends TestCase
         $this->assertSame($model->id, $payment->payable->id);
     }
 
-    public function testPaymentUrlAttribute()
+    public function testPaymentUrlAttributeReturnsStringIfPaymentIsNotSuccessful()
     {
         $payment = factory(Payment::class)->create(['payment_key' => 'new_payment_key']);
 
         $expected = PaymentKey::PAYMENT_PAGE.'new_payment_key';
 
         $this->assertSame($expected, $payment->payment_url);
+    }
+
+    public function testPaymentUrlAttributeReturnsNullIfPaymentIsNotSuccessful()
+    {
+        $payment = factory(Payment::class)->create(['status' => 1]);
+
+        $this->assertNull($payment->payment_url);
     }
 
     public function testFormattedAmountAttribute()

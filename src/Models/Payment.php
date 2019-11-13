@@ -57,6 +57,11 @@ class Payment extends Model
 
     public const MINIMUM_REQUIRED_CHECKS = 5;
 
+    /**
+     * Payment constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -64,31 +69,78 @@ class Payment extends Model
         $this->setTable(config('goldenpay.table_name'));
     }
 
+    /**
+     * Returns payment's related model.
+     *
+     * @return MorphTo
+     */
     public function payable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function getPaymentUrlAttribute(): string
+    /**
+     * "payment_url" accessor.
+     * Used to get "Goldenpay payment page url" from Payment model instance.
+     * Returns "null" if payment is considered successful.
+     *
+     * @return string|null
+     */
+    public function getPaymentUrlAttribute(): ?string
     {
+        if ($this->successful) {
+            return null;
+        }
+
         return PaymentKey::PAYMENT_PAGE.$this->payment_key;
     }
 
+    /**
+     * "successful" accessor.
+     * Used on Payment model instances to get if payment considered successful.
+     *
+     * @return bool
+     */
     public function getSuccessfulAttribute(): bool
     {
         return $this->status === self::STATUS_SUCCESSFUL;
     }
 
+    /**
+     * "formatted_amount" accessor.
+     * Because all amount related values stored as integer,
+     * this accessor to return values as decimal.
+     *
+     * @return float|int
+     */
     public function getFormattedAmountAttribute()
     {
         return $this->amount / 100;
     }
 
+    /**
+     * "successful()" scope to filter only successful payments.
+     * Successful payments are payments with "status" field value equal to STATUS_SUCCESSFUL constant value.
+     *
+     * @param Builder $builder
+     * @return Builder
+     */
     public function scopeSuccessful(Builder $builder): Builder
     {
         return $builder->whereStatus(self::STATUS_SUCCESSFUL);
     }
 
+    /**
+     * "pending()" scope to filter only pending payments.
+     * Pending payments are:
+     * "status" field anything other than STATUS_SUCCESSFUL constant value,
+     * PLUS
+     * "checks" field less than MINIMUM_REQUIRED_CHECKS constant value OR "created_at" timestamp less than 30 minutes.
+     *
+     * @param Builder $builder
+     *
+     * @return Builder
+     */
     public function scopePending(Builder $builder): Builder
     {
         return $builder
