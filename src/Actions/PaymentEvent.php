@@ -3,8 +3,6 @@
 namespace Orkhanahmadov\LaravelGoldenpay\Actions;
 
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Events\Dispatcher;
-use Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 class PaymentEvent
@@ -13,6 +11,10 @@ class PaymentEvent
      * @var Repository
      */
     private $config;
+    /**
+     * @var bool
+     */
+    private $enabled = true;
 
     /**
      * Event constructor.
@@ -22,6 +24,7 @@ class PaymentEvent
     public function __construct(Repository $config)
     {
         $this->config = $config;
+        $this->enabled = $config->get('goldenpay.events.enabled', true);
     }
 
     /**
@@ -34,6 +37,8 @@ class PaymentEvent
     {
         $event = $this->config->get($name);
 
-        $event::dispatch($payment);
+        if ($this->enabled) {
+            $event::dispatch($payment);
+        }
     }
 }
