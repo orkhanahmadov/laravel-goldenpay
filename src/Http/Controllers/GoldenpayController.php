@@ -38,7 +38,7 @@ abstract class GoldenpayController
         $this->event = $event;
         $this->goldenpay = $goldenpay;
 
-        $this->checkPaymentResult($request);
+        $this->paymentResult($request);
     }
 
     /**
@@ -46,33 +46,8 @@ abstract class GoldenpayController
      *
      * @param Request $request
      */
-    final protected function checkPaymentResult(Request $request): void
+    final protected function paymentResult(Request $request): void
     {
         $this->payment = $this->goldenpay->result($request->query('payment_key'));
-
-        $this->fireEvent();
-    }
-
-    /**
-     * Fires event based on payment status.
-     */
-    private function fireEvent(): void
-    {
-        if ($this->paymentSuccessful()) {
-            $this->event->execute('goldenpay.payment_events.successful', $this->payment);
-            return;
-        }
-
-        $this->event->execute('goldenpay.payment_events.failed', $this->payment);
-    }
-
-    /**
-     * Returns state if payment was successful.
-     *
-     * @return bool
-     */
-    protected function paymentSuccessful(): bool
-    {
-        return $this->payment->successful;
     }
 }

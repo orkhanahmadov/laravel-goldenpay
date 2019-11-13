@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Event;
 use Orkhanahmadov\Goldenpay\Enums\CardType;
 use Orkhanahmadov\Goldenpay\Enums\Language;
+use Orkhanahmadov\Goldenpay\PaymentInterface;
+use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
+use Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary;
 use Orkhanahmadov\LaravelGoldenpay\Tests\TestCase;
 
 class GoldenpayTest extends TestCase
@@ -110,9 +113,17 @@ class GoldenpayTest extends TestCase
         });
     }
 
-    public function testResultMethodFiresPaymentFailedEventIfPaymentIsUnsuccessful()
+    public function testResultMethodWontFiresPaymentSuccessfulEventIfPaymentIsNotSuccessful()
     {
-        $this->markTestIncomplete();
+        $this->app->bind(PaymentInterface::class, function () {
+            return new FakePaymentLibrary(5, 'failed');
+        });
+        $goldenpay = $this->app->make(Goldenpay::class);
+        $payment = factory(Payment::class)->create();
+
+        $goldenpay->result($payment);
+
+        Event::assertNotDispatched(config('goldenpay.payment_events.successful'));
     }
 
     public function testThrowsModelNotFoundExceptionIfPaymentKeyDoesNotExist()

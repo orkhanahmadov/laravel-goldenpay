@@ -101,6 +101,9 @@ class Goldenpay
         $payment->save();
 
         $this->event->execute('goldenpay.payment_events.checked', $payment);
+        if ($payment->successful) {
+            $this->event->execute('goldenpay.payment_events.successful', $payment);
+        }
 
         return $payment;
     }

@@ -74,7 +74,6 @@ return [
         'created' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent::class,
         'checked' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent::class,
         'successful' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent::class,
-        'failed' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentFailedEvent::class,
     ],
 
 ];

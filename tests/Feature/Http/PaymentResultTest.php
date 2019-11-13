@@ -45,10 +45,6 @@ class PaymentResultTest extends TestCase
         $result = $this->get('__goldenpay-fake-test-route__?payment_key=1234-ABCD');
 
         $result->assertOk();
-        $payment->refresh();
-        Event::assertDispatched(config('goldenpay.payment_events.failed'), function ($event) use ($payment) {
-            return $event->payment->id === $payment->id && !$event->payment->successful;
-        });
         Event::assertNotDispatched(config('goldenpay.payment_events.successful'));
     }
 }
