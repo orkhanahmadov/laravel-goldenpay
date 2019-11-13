@@ -26,28 +26,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Goldenpay routes
-    |--------------------------------------------------------------------------
-    |
-    | These routes are required by Goldenpay and first needs to be registered in Goldenpay Dashboard:
-    | https://rest.goldenpay.az/merchant/
-    |
-    | First go to dashboard, and specify your desired success and fail endpoints,
-    | then customize this config array with your endpoints.
-    |
-    | Example:
-    | If in Goldenpay dashboard you specified your success endpoint as: https://your-domain.com/goldenpay/success
-    | then in this file set success route needs to be "goldenpay/success". Same for fail route.
-    |
-    */
-
-    'routes' => [
-        'success' => 'goldenpay/success',
-        'fail' => 'goldenpay/fail',
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Database table name
     |--------------------------------------------------------------------------
     |
@@ -59,21 +37,42 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Events
+    | Payment events
     |--------------------------------------------------------------------------
     |
-    | Defines event classes for payment events.
-    | Each event receives instance of related \Orkhanahmadov\LaravelGoldenpay\Models\Payment model.
+    | Defines event types and event classes for each payment event.
+    | Each event receives instance of payment related "Orkhanahmadov\LaravelGoldenpay\Models\Payment" model.
     |
     */
 
-    // todo: rename to "payment_events"
     'payment_events' => [
+
+        /*
+        |--------------------------------------------------------------------------
+        | Enables/disables payment events
+        |--------------------------------------------------------------------------
+        |
+        | Set to "false" if you want to disable all payment events.
+        |
+        */
         'enabled' => true,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Payment event types
+        |--------------------------------------------------------------------------
+        |
+        | Lists all possible event types and related event classes.
+        | If you want to use your own event classes for specific events, you can replace them here.
+        |
+        | Each event class needs to implement "Orkhanahmadov\LaravelGoldenpay\Events\PaymentEvent" class.
+        |
+        */
 
         'created' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent::class,
         'checked' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent::class,
         'successful' => \Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent::class,
+
     ],
 
 ];
