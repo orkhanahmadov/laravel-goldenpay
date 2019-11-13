@@ -25,11 +25,11 @@ class ResultCommandTest extends TestCase
         $this->assertSame(1, $payment3->refresh()->status);
         $this->assertSame(1, $payment4->refresh()->status);
         $this->assertNull($payment5->refresh()->status);
-        Event::assertDispatched(config('goldenpay.events.payment_checked'), 3);
-        Event::assertNotDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($payment4) {
+        Event::assertDispatched(config('goldenpay.payment_events.checked'), 3);
+        Event::assertNotDispatched(config('goldenpay.payment_events.checked'), function ($event) use ($payment4) {
             return $event->payment->id === $payment4->id;
         });
-        Event::assertNotDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($payment5) {
+        Event::assertNotDispatched(config('goldenpay.payment_events.checked'), function ($event) use ($payment5) {
             return $event->payment->id === $payment5->id;
         });
     }

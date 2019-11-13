@@ -59,11 +59,11 @@ abstract class GoldenpayController
     private function fireEvent(): void
     {
         if ($this->paymentSuccessful()) {
-            $this->event->execute('goldenpay.events.payment_successful', $this->payment);
+            $this->event->execute('goldenpay.payment_events.successful', $this->payment);
             return;
         }
 
-        $this->event->execute('goldenpay.events.payment_failed', $this->payment);
+        $this->event->execute('goldenpay.payment_events.failed', $this->payment);
     }
 
     /**

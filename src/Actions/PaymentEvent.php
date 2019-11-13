@@ -24,7 +24,7 @@ class PaymentEvent
     public function __construct(Repository $config)
     {
         $this->config = $config;
-        $this->enabled = $config->get('goldenpay.events.enabled', true);
+        $this->enabled = $config->get('goldenpay.payment_events.enabled', true);
     }
 
     /**

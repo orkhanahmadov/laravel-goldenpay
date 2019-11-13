@@ -21,35 +21,30 @@ class PaymentEventTest extends TestCase
 
     public function testFiresPaymentEventWithEventNameAndPaymentInstance()
     {
-        $this->action->execute('goldenpay.events.payment_created', $this->payment);
+        $this->action->execute('goldenpay.payment_events.created', $this->payment);
 
-        Event::assertDispatched(config('goldenpay.events.payment_created'), function ($event) {
+        Event::assertDispatched(config('goldenpay.payment_events.created'), function ($event) {
             return $event->payment->id === $this->payment->id;
         });
     }
 
     public function testWontFireAnyEventIfConfigDisablesPaymentEvents()
     {
-        Config::set('goldenpay.events.enabled', false);
+        Config::set('goldenpay.payment_events.enabled', false);
         $action = $this->app->make(PaymentEvent::class);
 
-        $action->execute('goldenpay.events.payment_created', $this->payment);
+        $action->execute('goldenpay.payment_events.created', $this->payment);
 
-        Event::assertNotDispatched(config('goldenpay.events.payment_created'));
+        Event::assertNotDispatched(config('goldenpay.payment_events.created'));
     }
 
     public function testWontFireSpecificEventIfItSetToNullInConfig()
     {
-        Config::set('goldenpay.events.payment_created', null);
+        Config::set('goldenpay.payment_events.created', null);
 
-        $this->action->execute('goldenpay.events.payment_created', $this->payment);
+        $this->action->execute('goldenpay.payment_events.created', $this->payment);
 
-        Event::assertNotDispatched(config('goldenpay.events.payment_created'));
-    }
-
-    public function testThrowsExceptionIfEventIsNotInstanceOfPaymentEvent()
-    {
-        $this->markTestIncomplete();
+        Event::assertNotDispatched(config('goldenpay.payment_events.created'));
     }
 
     protected function setUp(): void

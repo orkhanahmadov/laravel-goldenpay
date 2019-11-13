@@ -35,7 +35,7 @@ class GoldenpayTest extends TestCase
     {
         $payment = $this->goldenpay->payment(100, CardType::MASTERCARD(), 'whatever');
 
-        Event::assertDispatched(config('goldenpay.events.payment_created'), function ($event) use ($payment) {
+        Event::assertDispatched(config('goldenpay.payment_events.created'), function ($event) use ($payment) {
             return $event->payment->id === $payment->id;
         });
     }
@@ -94,9 +94,25 @@ class GoldenpayTest extends TestCase
 
         $result = $this->goldenpay->result($payment);
 
-        Event::assertDispatched(config('goldenpay.events.payment_checked'), function ($event) use ($result) {
+        Event::assertDispatched(config('goldenpay.payment_events.checked'), function ($event) use ($result) {
             return $event->payment->id === $result->id;
         });
+    }
+
+    public function testResultMethodFiresPaymentSuccessfulEventIfPaymentIsSuccessful()
+    {
+        $payment = factory(Payment::class)->create();
+
+        $result = $this->goldenpay->result($payment);
+
+        Event::assertDispatched(config('goldenpay.payment_events.successful'), function ($event) use ($result) {
+            return $event->payment->id === $result->id && $result->successful;
+        });
+    }
+
+    public function testResultMethodFiresPaymentFailedEventIfPaymentIsUnsuccessful()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testThrowsModelNotFoundExceptionIfPaymentKeyDoesNotExist()

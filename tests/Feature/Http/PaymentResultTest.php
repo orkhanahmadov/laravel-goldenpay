@@ -27,10 +27,10 @@ class PaymentResultTest extends TestCase
         $this->assertSame('2019-11-10 17:05:30', $payment->payment_date->format('Y-m-d H:i:s'));
         $this->assertSame('123456******7890', $payment->card_number);
         $this->assertSame('12345678', $payment->reference_number);
-        Event::assertDispatched(config('goldenpay.events.payment_successful'), function ($event) use ($payment) {
+        Event::assertDispatched(config('goldenpay.payment_events.successful'), function ($event) use ($payment) {
             return $event->payment->id === $payment->id && $event->payment->successful;
         });
-        Event::assertNotDispatched(config('goldenpay.events.payment_failed'));
+        Event::assertNotDispatched(config('goldenpay.payment_events.failed'));
     }
 
     public function testFailedPayment()
@@ -46,9 +46,9 @@ class PaymentResultTest extends TestCase
 
         $result->assertOk();
         $payment->refresh();
-        Event::assertDispatched(config('goldenpay.events.payment_failed'), function ($event) use ($payment) {
+        Event::assertDispatched(config('goldenpay.payment_events.failed'), function ($event) use ($payment) {
             return $event->payment->id === $payment->id && !$event->payment->successful;
         });
-        Event::assertNotDispatched(config('goldenpay.events.payment_successful'));
+        Event::assertNotDispatched(config('goldenpay.payment_events.successful'));
     }
 }

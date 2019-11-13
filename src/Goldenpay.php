@@ -74,7 +74,7 @@ class Goldenpay
             'description' => $description,
         ]);
 
-        $this->event->execute('goldenpay.events.payment_created', $payment);
+        $this->event->execute('goldenpay.payment_events.created', $payment);
 
         return $payment;
     }
@@ -100,7 +100,7 @@ class Goldenpay
         $payment->checks = $result->getCheckCount();
         $payment->save();
 
-        $this->event->execute('goldenpay.events.payment_checked', $payment);
+        $this->event->execute('goldenpay.payment_events.checked', $payment);
 
         return $payment;
     }
