@@ -55,13 +55,17 @@ class PaymentTest extends TestCase
 
     public function testPendingScope()
     {
-        $finishedPayment = factory(Payment::class)->create(['checks' => 5, 'status' => 33, 'created_at' => now()->subMinutes(31)]);
+        $finishedPayment = factory(Payment::class)->create(
+            ['checks' => 5, 'status' => 33, 'created_at' => now()->subMinutes(31)]
+        );
         $successfulPayment = factory(Payment::class)->create(['status' => 1, 'created_at' => now()->subMinutes(5)]);
         $manyCheckedPayment = factory(Payment::class)->create(['checks' => 5, 'created_at' => now()->subMinutes(40)]);
         $pendingPayment1 = factory(Payment::class)->create(['status' => 55, 'created_at' => now()->subMinutes(10)]);
         $pendingPayment2 = factory(Payment::class)->create(['created_at' => now()->subMinutes(12)]);
         $pendingPayment3 = factory(Payment::class)->create(['checks' => 4, 'created_at' => now()->subMinutes(45)]);
-        $pendingPayment4 = factory(Payment::class)->create(['checks' => 2, 'status' => 33, 'created_at' => now()->subMinutes(35)]);
+        $pendingPayment4 = factory(Payment::class)->create(
+            ['checks' => 2, 'status' => 33, 'created_at' => now()->subMinutes(35)]
+        );
 
         $payments = Payment::pending()->get();
 
