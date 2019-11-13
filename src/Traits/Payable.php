@@ -11,7 +11,7 @@ use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 /**
- * Trait Payable
+ * Trait Payable.
  *
  * @mixin Model
  */
