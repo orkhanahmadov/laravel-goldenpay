@@ -2,12 +2,10 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
 use Orkhanahmadov\Goldenpay\Goldenpay as Library;
 use Orkhanahmadov\LaravelGoldenpay\Commands\ResultCommand;
-use Orkhanahmadov\LaravelGoldenpay\Tests\FakeResultController;
 
 class LaravelGoldenpayServiceProvider extends ServiceProvider
 {
@@ -33,8 +31,6 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
             $this->commands([
                 ResultCommand::class,
             ]);
-
-            $this->registerRoutes();
         }
     }
 
@@ -48,15 +44,5 @@ class LaravelGoldenpayServiceProvider extends ServiceProvider
         $this->app->singleton('goldenpay', function () {
             return $this->app->make(Goldenpay::class);
         });
-    }
-
-    /**
-     * Registers package routes.
-     */
-    private function registerRoutes(): void
-    {
-        if ($this->app->environment('testing')) {
-            Route::get('__goldenpay-fake-test-route__', [FakeResultController::class, 'index']);
-        }
     }
 }
