@@ -2,13 +2,12 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Feature\Http;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\ValidationException;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
-use Orkhanahmadov\LaravelGoldenpay\Actions\PaymentEvent;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
-use Orkhanahmadov\LaravelGoldenpay\Http\Requests\Request;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\FakePaymentLibrary;
 use Orkhanahmadov\LaravelGoldenpay\Tests\FakeResultController;
@@ -24,7 +23,6 @@ class PaymentResultTest extends TestCase
 
         $controller = new FakeResultController(
             new Request(['payment_key' => '1234-ABCD']),
-            new PaymentEvent(config()),
             $this->goldenpay
         );
         $result = $controller->index();
@@ -48,7 +46,6 @@ class PaymentResultTest extends TestCase
 
         $controller = new FakeResultController(
             new Request(['payment_key' => '1234-ABCD']),
-            new PaymentEvent(config()),
             $goldenpay
         );
         $result = $controller->index();
