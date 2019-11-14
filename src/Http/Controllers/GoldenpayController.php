@@ -2,17 +2,16 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Http\Controllers;
 
-use Orkhanahmadov\LaravelGoldenpay\Actions\PaymentEvent;
+use Illuminate\Http\Request;
 use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
-use Orkhanahmadov\LaravelGoldenpay\Http\Requests\Request;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 
 abstract class GoldenpayController
 {
     /**
-     * @var PaymentEvent
+     * @var Request
      */
-    private $event;
+    protected $request;
     /**
      * @var Goldenpay
      */
@@ -26,27 +25,37 @@ abstract class GoldenpayController
      * Controller constructor.
      *
      * @param Request $request
-     * @param PaymentEvent $event
      * @param Goldenpay $goldenpay
      */
     public function __construct(
         Request $request,
-        PaymentEvent $event,
         Goldenpay $goldenpay
     ) {
-        $this->event = $event;
+        $this->request = $request;
         $this->goldenpay = $goldenpay;
 
-        $this->paymentResult($request);
+        $this->paymentResult();
     }
 
     /**
      * Checks payment result with "payment_key" query parameter.
-     *
-     * @param Request $request
      */
-    final protected function paymentResult(Request $request): void
+    final protected function paymentResult(): void
     {
-        $this->payment = $this->goldenpay->result($request->query('payment_key'));
+        $this->payment = $this->goldenpay->result($this->validate());
+    }
+
+    /**
+     * Validates request for existence of "payment_key".
+     *
+     * @return string
+     */
+    private function validate(): string
+    {
+        $validated = $this->request->validate([
+            'payment_key' => 'required|string',
+        ]);
+
+        return $validated['payment_key'];
     }
 }
