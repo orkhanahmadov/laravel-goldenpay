@@ -15,6 +15,22 @@
 
 Full-feature Laravel package for Goldenpay integration.
 
+# Table of Contents
+
+1. [Requirements](#requirements)
+2. [Installation](#installation)
+3. [Usage](#usage)
+3. [Controller](#controller)
+4. [Models](#models)
+4. [Commands](#commands)
+5. [Events](#events)
+6. [Configuration](#configuration)
+
+## Requirements
+
+- PHP 7.2 or higher
+- Laravel 5.8.*; ^6.0 or higher.
+
 ## Installation
 
 You can install the package via composer:
@@ -28,6 +44,26 @@ composer require orkhanahmadov/laravel-goldenpay
 ``` php
 // Usage description here
 ```
+
+## Controller
+
+// todo
+
+## Models
+
+// todo
+
+## Commands
+
+// todo
+
+## Events
+
+// todo
+
+## Configuration
+
+// todo
 
 ### Testing
 
