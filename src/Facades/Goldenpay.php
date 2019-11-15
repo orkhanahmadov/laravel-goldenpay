@@ -1,6 +1,6 @@
 <?php
 
-namespace Orkhanahmadov\LaravelGoldenpay\Facade;
+namespace Orkhanahmadov\LaravelGoldenpay\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

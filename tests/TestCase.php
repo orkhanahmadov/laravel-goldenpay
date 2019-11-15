@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Orkhanahmadov\Goldenpay\PaymentInterface;
-use Orkhanahmadov\LaravelGoldenpay\Facade\Goldenpay;
+use Orkhanahmadov\LaravelGoldenpay\Facades\Goldenpay;
 use Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider;
 
 class TestCase extends Orchestra

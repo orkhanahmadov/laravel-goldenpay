@@ -60,9 +60,13 @@ class FakePaymentLibrary implements PaymentInterface
      *
      * @return PaymentKey
      */
-    public function payment(int $amount, CardType $cardType, string $description, ?Language $lang): PaymentKey
+    public function payment(int $amount, CardType $cardType, string $description, Language $lang): PaymentKey
     {
-        return new PaymentKey($this->code, $this->message, $this->data ?: 'valid-payment-key');
+        return new PaymentKey(
+            $this->data ?: 'valid-payment-key',
+            $this->code,
+            $this->message
+        );
     }
 
     /**
@@ -75,8 +79,6 @@ class FakePaymentLibrary implements PaymentInterface
     public function result($paymentKey): PaymentResult
     {
         return new PaymentResult(
-            $this->code,
-            $this->message,
             $this->data ?: [
                 'paymentKey' => $paymentKey,
                 'merchantName' => 'merchant name',
@@ -87,7 +89,9 @@ class FakePaymentLibrary implements PaymentInterface
                 'language' => 'lv',
                 'description' => 'item-description',
                 'rrn' => '12345678',
-            ]
+            ],
+            $this->code,
+            $this->message
         );
     }
 }

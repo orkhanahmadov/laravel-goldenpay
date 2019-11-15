@@ -92,7 +92,7 @@ class Payment extends Model
             return null;
         }
 
-        return PaymentKey::PAYMENT_PAGE.$this->payment_key;
+        return (new PaymentKey($this->payment_key))->paymentUrl();
     }
 
     /**

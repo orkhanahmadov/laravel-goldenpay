@@ -25,9 +25,9 @@ class PaymentTest extends TestCase
     {
         $payment = factory(Payment::class)->create(['payment_key' => 'new_payment_key']);
 
-        $expected = PaymentKey::PAYMENT_PAGE.'new_payment_key';
+        $expected = new PaymentKey('new_payment_key');
 
-        $this->assertSame($expected, $payment->payment_url);
+        $this->assertSame($expected->paymentUrl(), $payment->payment_url);
     }
 
     public function testPaymentUrlAttributeReturnsNullIfPaymentIsNotSuccessful()
