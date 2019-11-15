@@ -24,7 +24,7 @@
         "illuminate/http": "5.8.*|^6.0",
         "illuminate/queue": "5.8.*|^6.0",
         "illuminate/support": "5.8.*|^6.0",
-        "orkhanahmadov/goldenpay": "dev-master"
+        "orkhanahmadov/goldenpay": "^2.0"
     },
     "require-dev": {
         "orchestra/testbench": "3.8.*|^4.0",
