@@ -28,8 +28,8 @@ Full-feature Laravel package for Goldenpay integration.
 
 ## Requirements
 
-- PHP 7.2 or higher
-- Laravel 5.8.*; ^6.0 or higher.
+- PHP *^7.2*
+- Laravel **5.8.*** or **^6.0**
 
 ## Installation
 
@@ -41,8 +41,42 @@ composer require orkhanahmadov/laravel-goldenpay
 
 ## Usage
 
+First, set your Goldenpay merchant name and auth key in `.env` file.
+You can get these from [Goldenpay Dashboard](https://rest.goldenpay.az/merchant/).
+
+``` shell script
+GOLDENPAY_AUTH_KEY=your-auth-key
+GOLDENPAY_MERCHANT_NAME=your-merchant-name
+```
+
+To use the package you need instance of `Orkhanahmadov\LaravelGoldenpay\Goldenpay`.
+You can instantiate this class using Laravel's service container, for example by injecting to your controller
+
 ``` php
-// Usage description here
+use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
+
+class MyController
+{
+    public function index(Goldenpay $goldenpay)
+    {
+        //
+    }
+}
+```
+
+Or you can use Laravel's service resolver to create instance of the class:
+
+``` php
+use Orkhanahmadov\LaravelGoldenpay\Goldenpay;
+
+class MyClass
+{
+    public function doSomething()
+    {
+        $goldenpay = app(Goldenpay::class);
+        //
+    }
+}
 ```
 
 ## Controller
