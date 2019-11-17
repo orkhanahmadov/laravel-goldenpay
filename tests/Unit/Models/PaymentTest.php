@@ -2,6 +2,7 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Tests\Unit\Models;
 
+use Illuminate\Support\Facades\Config;
 use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 use Orkhanahmadov\LaravelGoldenpay\Tests\FakePayableModel;
@@ -51,6 +52,26 @@ class PaymentTest extends TestCase
 
         $failedPayment = factory(Payment::class)->create(['status' => 2]);
         $this->assertFalse($failedPayment->successful);
+    }
+
+    public function testEncryptsCardNumberIfRelatedSettingSetToTrue()
+    {
+        $payment1 = factory(Payment::class)->create(['card_number' => null]);
+        $payment2 = factory(Payment::class)->create(['card_number' => '1234']);
+
+        $this->assertSame(null, $payment1->card_number);
+        $this->assertSame('1234', decrypt($payment2->card_number));
+    }
+
+    public function testDoesNotEncryptCardNumberIfRelatedSettingSetToFalse()
+    {
+        Config::set('goldenpay.encrypt_card_numbers', false);
+
+        $payment1 = factory(Payment::class)->create(['card_number' => null]);
+        $payment2 = factory(Payment::class)->create(['card_number' => '1234']);
+
+        $this->assertSame(null, $payment1->card_number);
+        $this->assertSame('1234', $payment2->card_number);
     }
 
     public function testPendingScope()

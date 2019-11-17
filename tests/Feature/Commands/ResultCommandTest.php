@@ -48,7 +48,7 @@ class ResultCommandTest extends TestCase
         $this->assertSame(1, $payment->checks);
         $this->assertInstanceOf(Carbon::class, $payment->payment_date);
         $this->assertSame('2019-11-10 17:05:30', $payment->payment_date->format('Y-m-d H:i:s'));
-        $this->assertSame('123456******7890', $payment->card_number);
+        $this->assertSame('123456******7890', decrypt($payment->card_number));
         $this->assertSame('12345678', $payment->reference_number);
     }
 

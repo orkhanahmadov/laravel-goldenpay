@@ -5,6 +5,8 @@ namespace Orkhanahmadov\LaravelGoldenpay\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Orkhanahmadov\Goldenpay\Response\PaymentKey;
 
 /**
@@ -66,7 +68,7 @@ class Payment extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('goldenpay.table_name'));
+        $this->setTable(Config::get('goldenpay.table_name'));
     }
 
     /**
@@ -116,6 +118,20 @@ class Payment extends Model
     public function getFormattedAmountAttribute()
     {
         return $this->amount / 100;
+    }
+
+    /**
+     * Mutator for encrypting "card_number" data.
+     *
+     * @param string|null $value
+     */
+    public function setCardNumberAttribute(?string $value): void
+    {
+        if (Config::get('goldenpay.encrypt_card_numbers') && $value) {
+            $this->attributes['card_number'] = Crypt::encrypt($value);
+        } else {
+            $this->attributes['card_number'] = $value;
+        }
     }
 
     /**
