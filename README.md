@@ -122,7 +122,50 @@ Method returns updated instance of `Orkhanahmadov\LaravelGoldenpay\Models\Paymen
 
 ## Controller
 
-// todo
+Goldenpay requires to have endpoints for successful and unsuccessful payment.
+For each of this endpoints Goldenpay sends GET request with `payment_key` query string attached.
+To get payment result you need to create a route to accept these requests and fetch result of the payment using received `payment_key`.
+
+Package ships with a controller that helps to simplify this procedure.
+To get started create a GET route for successful or unsuccessful payments,
+add full URL in [Goldenpay Dashboard](https://rest.goldenpay.az/merchant/) to corresponding field.
+
+Create a controller class for your route and extend `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController`.
+
+Route:
+``` php
+Route::get('payments/successful', 'App\Http\Controllers\Payment\SuccessfulPaymentController@index');
+```
+
+Controller:
+``` php
+use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController;
+
+class SuccessfulPaymentController extends GoldenpayController
+{
+    public function index()
+    {
+        // return a view or JSON, up to you
+    }
+}
+```
+
+By extending `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController`,
+your controller will automatically check for payment result based on `payment_key` query string.
+
+In your controller you can access to `$payment` property which will have payment results from Goldenpay.
+
+``` php
+public function index()
+{
+    $this->payment->status; // will return payment status 
+    $this->payment->successful; // will return true if payment was successful or false if unsuccessful
+}
+```
+
+You can use same endpoint for both successful and unsuccessful payments and decide what you want to show user based on
+`$this->payment->successful` state or you create separate endpoints and controllers and
+extend `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController` in both controllers.
 
 ## Models
 
