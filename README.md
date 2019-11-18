@@ -174,7 +174,10 @@ Besides usual Eloquent functionality this model also has specific accessors and 
 
 ### Accessors
 
-#### 
+* `successful` - Returns true if payment marked as successful, false otherwise
+* `payment_url` - Returns payment page url. Returns null if payment marked as successful
+* `formatted_amount` - Returns "amount" in decimal form
+* `card_number_decrypted` - Returns decrypted "card_number" value. Returns null if card number encrypting is turned off
 
 ## Commands
 
