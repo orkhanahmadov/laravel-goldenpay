@@ -191,10 +191,10 @@ Besides usual Eloquent functionality this model also has specific accessors and 
 
 ### Accessors
 
-* `successful` - Returns true if payment marked as successful, false otherwise
-* `payment_url` - Returns payment page url. Returns null if payment marked as successful
+* `successful` - Returns `true` if payment marked as successful, `false` otherwise
+* `payment_url` - Returns payment page url. Returns `null` if payment marked as successful
 * `formatted_amount` - Returns "amount" in decimal form
-* `card_number_decrypted` - Returns decrypted "card_number" value. Returns null if card number encrypting is turned off
+* `card_number_decrypted` - Returns decrypted "card_number" value. Returns `null` if card number encrypting is turned off
 
 ### Scopes
 
@@ -272,10 +272,10 @@ Config file contains following settings:
 * `merchant_name` - Defines Goldenpay "merchant name", defaults to `.env` variable
 * `table_name` - Defines name for Goldenpay payments database table. Default: "goldenpay_payments"
 * `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted 
-when when creating payments, getting payment results. Default is "true", 
-change to "false" if you want to disable automatic encryption. Recommended to leave it "true" for extra layer of security.
+when when creating payments, getting payment results. Default is `true`, 
+change to `false` if you want to disable automatic encryption. Recommended to leave it `true` for extra layer of security.
 * `payment_events` - Payment events related settings
-    * `enabled` - Defines if payment events are enabled. Set to "false" to disable all payment events
+    * `enabled` - Defines if payment events are enabled. Set to `false` to disable all payment events
     * `checked` - "Payment checked" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent` class
     * `created` - "Payment created" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent` class
     * `successful` - "Payment successful" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent` class
@@ -285,7 +285,7 @@ Each payment event receives instance of `Orkhanahmadov\LaravelGoldenpay\Models\P
 Because of this, make sure you add payment model as dependency to your event class constructor signature or 
 you can extend `Orkhanahmadov\LaravelGoldenpay\Events\PaymentEvent` class which already has payment model as dependency.
 
-Setting specific payment event to "null" disables that event without interrupting others.
+Setting specific payment event to `null` disables that event without interrupting others.
 
 ### Testing
 
