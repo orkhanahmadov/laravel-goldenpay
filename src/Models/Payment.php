@@ -160,7 +160,7 @@ class Payment extends Model
      */
     public function scopeSuccessful(Builder $builder): Builder
     {
-        return $builder->whereStatus(self::STATUS_SUCCESSFUL);
+        return $builder->where('status', self::STATUS_SUCCESSFUL);
     }
 
     /**

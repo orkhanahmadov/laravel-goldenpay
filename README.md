@@ -170,6 +170,20 @@ extend `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController` in 
 ## Models
 
 Package ships with `Orkhanahmadov\LaravelGoldenpay\Models\Payment` Eloquent model.
+Model stores following information for each payment:
+
+* `payment_key` - string, unique payment key provided by Goldenpay
+* `amount` - integer, payment amount
+* `card_type` - enum, "m" for MasterCard, "v" for VISA
+* `language` - enum, "en" for English, "ru" for Russian, "lv" for Azerbaijani
+* `description` - string, payment description
+* `status` - integer, payment status code
+* `message` - string, payment status message
+* `reference_number` - string, payment reference number
+* `card_number` - string, encrypted, card number used for payment
+* `payment_date` - datetime, payment date
+* `checks` - integer, payment check count
+
 Besides usual Eloquent functionality this model also has specific accessors and scopes which you can utilize.
 
 ### Accessors
@@ -178,6 +192,12 @@ Besides usual Eloquent functionality this model also has specific accessors and 
 * `payment_url` - Returns payment page url. Returns null if payment marked as successful
 * `formatted_amount` - Returns "amount" in decimal form
 * `card_number_decrypted` - Returns decrypted "card_number" value. Returns null if card number encrypting is turned off
+
+### Scopes
+
+* `successful()` - Filters "successful" payments only
+* `pending()` - Filters "pending" payments only. Pending payments are the payments that not successful 
+and either created within 30 minutes or have less than 5 payment checks.
 
 ## Commands
 
