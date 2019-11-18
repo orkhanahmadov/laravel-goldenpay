@@ -39,6 +39,11 @@ You can install the package via composer:
 composer require orkhanahmadov/laravel-goldenpay
 ```
 
+Run this command to publish required migration file:
+``` shell script
+php artisan vendor:publish --provider="Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider" --tag=migrations
+```
+
 ## Usage
 
 First, set your Goldenpay merchant name and auth key in `.env` file.
@@ -258,8 +263,29 @@ protected $listen = [
 Run this command to publish package config file:
 
 ``` shell script
-php artisan vendor:publish --provider="Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider"
+php artisan vendor:publish --provider="Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider" --tag=config
 ```
+
+Config file contains following settings:
+
+* `auth_key` - Defines Goldenpay "auth key", defaults to `.env` variable
+* `merchant_name` - Defines Goldenpay "merchant name", defaults to `.env` variable
+* `table_name` - Defines name for Goldenpay payments database table. Default: "goldenpay_payments"
+* `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted 
+when when creating payments, getting payment results. Default is "true", 
+change to "false" if you want to disable automatic encryption. Recommended to leave it "true" for extra layer of security.
+* `payment_events` - Payment events related settings
+    * `enabled` - Defines if payment events are enabled. Set to "false" to disable all payment events
+    * `checked` - "Payment checked" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent` class
+    * `created` - "Payment created" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent` class
+    * `successful` - "Payment successful" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent` class
+
+If you want to use your own event class for specific payment event you can replace class namespace with your class namespace.
+Each payment event receives instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` Eloquent model. 
+Because of this, make sure you add payment model as dependency to your event class constructor signature or 
+you can extend `Orkhanahmadov\LaravelGoldenpay\Events\PaymentEvent` class which already has payment model as dependency.
+
+Setting specific payment event to "null" disables that event without interrupting others.
 
 ### Testing
 

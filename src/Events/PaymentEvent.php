@@ -2,7 +2,6 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
@@ -10,7 +9,6 @@ use Orkhanahmadov\LaravelGoldenpay\Models\Payment;
 abstract class PaymentEvent
 {
     use Dispatchable;
-    use InteractsWithSockets;
     use SerializesModels;
 
     /**
