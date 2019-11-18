@@ -28,8 +28,9 @@ use Orkhanahmadov\Goldenpay\Response\PaymentKey;
  * @property int $checks
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read string $payment_url
+ * @property-read string|null $payment_url
  * @property-read float|int $formatted_amount
+ * @property-read string|null $card_number_decrypted
  * @property-read bool $successful
  * @method static Payment first()
  * @method static Builder successful()
@@ -111,13 +112,29 @@ class Payment extends Model
     /**
      * "formatted_amount" accessor.
      * Because all amount related values stored as integer,
-     * this accessor to return values as decimal.
+     * this accessor is used to return values as decimal.
      *
      * @return float|int
      */
     public function getFormattedAmountAttribute()
     {
         return $this->amount / 100;
+    }
+
+    /**
+     * "card_number_decrypted" accessor.
+     * Returns decrypted value for "card_number".
+     * Returns null if "encrypt_card_numbers" setting turned off or "card_number" is not available.
+     *
+     * @return string|null
+     */
+    public function getCardNumberDecryptedAttribute(): ?string
+    {
+        if (Config::get('goldenpay.encrypt_card_numbers') && $this->card_number) {
+            return Crypt::decrypt($this->card_number);
+        }
+
+        return null;
     }
 
     /**

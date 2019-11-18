@@ -22,7 +22,7 @@ class PaymentTest extends TestCase
         $this->assertSame($model->id, $payment->payable->id);
     }
 
-    public function testPaymentUrlAttributeReturnsStringIfPaymentIsNotSuccessful()
+    public function testPaymentUrlAttribute()
     {
         $payment = factory(Payment::class)->create(['payment_key' => 'new_payment_key']);
 
@@ -43,6 +43,28 @@ class PaymentTest extends TestCase
         $payment = factory(Payment::class)->create(['amount' => 1569]);
 
         $this->assertSame(15.69, $payment->formatted_amount);
+    }
+
+    public function testCardNumberDecryptedAttribute()
+    {
+        $payment = factory(Payment::class)->create(['card_number' => '1234-5678']);
+
+        $this->assertSame('1234-5678', $payment->card_number_decrypted);
+    }
+
+    public function testCardNumberDecryptedAttributeReturnsNullIfEncryptingTurnedOff()
+    {
+        Config::set('goldenpay.encrypt_card_numbers', false);
+        $payment = factory(Payment::class)->create(['card_number' => '1234-5678']);
+
+        $this->assertNull($payment->card_number_decrypted);
+    }
+
+    public function testCardNumberDecryptedAttributeReturnsNullIfCardNumberIsNull()
+    {
+        $payment = factory(Payment::class)->create(['card_number' => null]);
+
+        $this->assertNull($payment->card_number_decrypted);
     }
 
     public function testSuccessfulAttribute()

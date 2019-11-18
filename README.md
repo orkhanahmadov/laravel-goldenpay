@@ -80,10 +80,10 @@ class MyClass
 ```
 
 Service has 2 methods:
-* payment()
-* result()
+* `payment()`
+* `result()`
 
-### payment()
+### `payment()`
 
 Prepares payment based on passed credentials and accepts 4 arguments:
 
@@ -103,7 +103,7 @@ $goldenpay->payment(1000, CardType::MASTERCARD(), 'my payment');
 
 Method returns created instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` model.
 
-### result()
+### `result()`
 
 Checks payment result based on previous payment key. Accepts 1 argument:
 
@@ -169,7 +169,12 @@ extend `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController` in 
 
 ## Models
 
-// todo
+Package ships with `Orkhanahmadov\LaravelGoldenpay\Models\Payment` Eloquent model.
+Besides usual Eloquent functionality this model also has specific accessors and scopes which you can utilize.
+
+### Accessors
+
+#### 
 
 ## Commands
 
