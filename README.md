@@ -28,7 +28,7 @@ Full-feature Laravel package for Goldenpay integration.
 
 ## Requirements
 
-- PHP *^7.2*
+- PHP **^7.2**
 - Laravel **5.8.*** or **^6.0**
 
 ## Installation
@@ -78,6 +78,47 @@ class MyClass
     }
 }
 ```
+
+Service has 2 methods:
+* payment()
+* result()
+
+### payment()
+
+Prepares payment based on passed credentials and accepts 4 arguments:
+
+* `Amount` - Payment amount, only integer values accepted
+For example, for you want to create payment for 10.25, then pass it as 1025.
+* `Card type` - Requires instance of `Orkhanahmadov\Goldenpay\Enums\CardType`.
+`CardType::VISA()` for VISA, `CardType::MASTERCARD()` for MasterCard
+* `Description` - Payment description
+* `Language` *(optional)* - Sets payment page interface language. Requires instance of `Orkhanahmadov\Goldenpay\Enums\Language`.
+`Language::EN()` for english, `Language::RU()` for russian, `Language::AZ()` for azerbaijani.
+If nothing passed service will use Laravel's active locale.
+
+``` php
+$goldenpay = app(Goldenpay::class);
+$goldenpay->payment(1000, CardType::MASTERCARD(), 'my payment');
+```
+
+Method returns created instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` model.
+
+### result()
+
+Checks payment result based on previous payment key. Accepts 1 argument:
+
+* `Payment` - This is Goldenpay's payment key as a string, or instance of previously created `Orkhanahmadov\LaravelGoldenpay\Models\Payment` model.
+
+``` php
+$goldenpay = app(Goldenpay::class);
+$paymentModel = $goldenpay->payment(1000, CardType::MASTERCARD(), 'my payment');
+
+$result = $goldenpay->result($result);
+// or
+$result = $goldenpay->result('1234-ABCD-5678');
+```
+
+Method returns updated instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` model with Goldenpay's response.
 
 ## Controller
 
