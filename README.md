@@ -231,11 +231,35 @@ it is recommended to keep frequency to 5 or 10 minutes.
 
 ## Events
 
-// todo
+Package ships with Laravel events which gets fired on specific conditions.
+
+Available event classes:
+
+* `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent` - gets fired when new payment is created
+* `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent` - gets fired when payment is checked for result
+* `Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent` - gets fired when payment is successful
+
+Each event receives instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` Eloquent model 
+as public `$payment` property.
+
+You can set up event listeners to trigger when specific payment event gets fired.
+
+``` php
+protected $listen = [
+    'Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent' => [
+        'App\Listeners\SendPaymentInvoice',
+        'App\Listeners\SendProductLicense',
+    ],
+];
+```
 
 ## Configuration
 
-// todo
+Run this command to publish package config file:
+
+``` shell script
+php artisan vendor:publish --provider="Orkhanahmadov\LaravelGoldenpay\LaravelGoldenpayServiceProvider"
+```
 
 ### Testing
 
