@@ -109,7 +109,7 @@ class Goldenpay
     public function result($payment): Payment
     {
         if (! $payment instanceof Payment) {
-            $payment = Payment::wherePaymentKey($payment)->firstOrFail();
+            $payment = Payment::where('payment_key', $payment)->firstOrFail();
         }
 
         $result = $this->authenticate()->result($payment->payment_key);

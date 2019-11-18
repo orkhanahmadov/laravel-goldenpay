@@ -58,7 +58,7 @@ class Payment extends Model
 
     public const STATUS_SUCCESSFUL = 1;
 
-    public const MINIMUM_REQUIRED_CHECKS = 5;
+    public const MINIMUM_REQUIRED_CHECKS = 3;
 
     /**
      * Payment constructor.

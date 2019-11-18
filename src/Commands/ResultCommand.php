@@ -30,7 +30,7 @@ class ResultCommand extends Command
     public function handle(Goldenpay $goldenpay): void
     {
         if ($paymentKey = $this->argument('paymentKey')) {
-            $payment = Payment::wherePaymentKey($paymentKey)->firstOrFail();
+            $payment = Payment::where('payment_key', $paymentKey)->firstOrFail();
 
             $goldenpay->result($payment);
 

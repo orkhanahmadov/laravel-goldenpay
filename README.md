@@ -79,9 +79,7 @@ class MyClass
 }
 ```
 
-Service has 2 methods:
-* `payment()`
-* `result()`
+### Available methods:
 
 ### `payment()`
 
@@ -197,11 +195,39 @@ Besides usual Eloquent functionality this model also has specific accessors and 
 
 * `successful()` - Filters "successful" payments only
 * `pending()` - Filters "pending" payments only. Pending payments are the payments that not successful 
-and either created within 30 minutes or have less than 5 payment checks.
+and either created within 30 minutes or have less than 3 payment checks.
 
 ## Commands
 
-// todo
+Package ships with artisan command for checking payment results.
+
+``` shell script
+php artisan goldenpay:result
+```
+
+Executing above command will loop through all "pending" payments and update their results.
+
+Command also accepts payment key as an argument to check single payment result.
+
+``` shell script
+php artisan goldenpay:result 1234-ABCD-5678
+```
+
+Goldenpay requires manual check for payments to determine their final status.
+For example, user might go to payment page then close browser window without entering anything.
+These kind payment cases needs to be checked manually to finalize their status.
+You can use Laravel's [Task Scheduling](https://laravel.com/docs/master/scheduling) 
+for running `goldenpay:result` command on Cron job.
+
+``` php
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('goldenpay:result')->everyFiveMinutes();
+}
+```
+
+Because Goldenpay states that each payment session is active only for 15 minutes,
+it is recommended to keep frequency to 5 or 10 minutes.
 
 ## Events
 
