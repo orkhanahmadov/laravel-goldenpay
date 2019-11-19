@@ -206,7 +206,10 @@ and either created within 30 minutes or have less than 3 payment checks.
 
 You can make any existing Eloquent model "payable" and attach Goldenpay payments to it.
 Use `Orkhanahmadov\LaravelGoldenpay\Traits\Payable` trait in your existing model to establish direct model relationship.
-Trait usage requires to have `description()` method which must returns payment description for given model instance.
+Trait usage requires to have `amount()` `description()` methods to be defined in your model:
+
+* `amount()` - Must return payment amount in integer
+* `description()` - Must return description for payment instance
 
 ``` php
 use Illuminate\Database\Eloquent\Model;
@@ -223,6 +226,21 @@ class Product extends Model
         'price',
     ];
 
+    protected $casts = [
+        'price' => 'float', // lets image that you store price as float, like "15.70" in "products" table
+    ];
+
+    /**
+     * Defines payment amount for this model's payments.
+     *
+     * @return int
+     */
+    protected function amount(): int
+    {
+        // this method needs to return integer value of price
+        return $this->amount * 100;
+    }
+
     /**
      * Defines description for this model's payments.
      *
@@ -230,22 +248,51 @@ class Product extends Model
      */
     protected function description(): string
     {
-        return $this->name . ' - ' . $this->color;
+        // this method needs to return description for payment instance
+        // try to use both unique and easy to read identifier
+        return $this->id . ' - ' . $this->name . ' - ' . $this->color;
     }
 }
 ```
 
 Now `Product` model has direct relationship with Goldenpay payments.
-By using `Payable` your model also gets access to payment related methods.
+By using `Payable` your model also gets access to payment related relationships and payment methods.
 
 #### `createPayment()`
 
 ``` php
 $product = Product::find(1);
-$product->createPayment(1500, )
+$product->createPayment(CardType::VISA());
 ```
 
-Accepts following
+Accepts following arguments:
+
+* `Card type` - Instance of `Orkhanahmadov\Goldenpay\Enums\CardType`
+* `Amount` *(optional)* - When skipped will use `amount()` method in model. Use it to pass custom amount
+* `Description` *(optional)* - When skipped will use `description()` method in model. Use it to pass custom description
+* `Language` *(optional)* - When skipped will use Laravel's locale. Instance of `Orkhanahmadov\Goldenpay\Enums\Language`.
+
+Method returns create instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` instance.
+
+#### `payments()`
+
+Eloquent relationship method. Return all attached payments to model.
+
+``` php
+$product = Product::find(1);
+$product->payments; // returns collection of Payment models
+$product->payments()->where('amount', '>=', 10000); // use it as regular Eloquent relationship
+```
+
+#### `successfulPayments()`
+
+Eloquent relationship method. Return all attached successful payments to model.
+
+``` php
+$product = Product::find(1);
+$product->successfulPayments; // returns collection of Payment models
+$product->successfulPayments()->where('amount', '>=', 10000); // use it as regular Eloquent relationship
+```
 
 ## Commands
 
@@ -316,9 +363,11 @@ Config file contains following settings:
 * `auth_key` - Defines Goldenpay "auth key", defaults to `.env` variable
 * `merchant_name` - Defines Goldenpay "merchant name", defaults to `.env` variable
 * `table_name` - Defines name for Goldenpay payments database table. Default: "goldenpay_payments"
-* `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted // todo: warning
+* `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted
 when when creating payments, getting payment results. Default is `true`, 
 change to `false` if you want to disable automatic encryption. Recommended to leave it `true` for extra layer of security.
+**Warning!** If you already have records in Payments table changing this value will break encryption/decryption.
+Old values won't be encrypted/decrypted automatically, you need to do it manually.
 * `payment_events` - Payment events related settings
     * `enabled` - Defines if payment events are enabled. Set to `false` to disable all payment events
     * `checked` - "Payment checked" event class. By default uses `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent` class
