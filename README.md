@@ -366,7 +366,7 @@ Config file contains following settings:
 * `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted
 when when creating payments, getting payment results. Default is `true`, 
 change to `false` if you want to disable automatic encryption. Recommended to leave it `true` for extra layer of security.
-**Warning!** If you already have records in Payments table changing this value will break encryption/decryption.
+**Warning!** If you already have records in Payments table, changing this value will break encryption/decryption.
 Old values won't be encrypted/decrypted automatically, you need to do it manually.
 * `payment_events` - Payment events related settings
     * `enabled` - Defines if payment events are enabled. Set to `false` to disable all payment events

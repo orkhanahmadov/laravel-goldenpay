@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
 use Orkhanahmadov\Goldenpay\Response\PaymentKey;
+use Orkhanahmadov\LaravelGoldenpay\QueryBuilders\PaymentQueryBuilder;
 
 /**
  * Class Payment.
@@ -33,8 +34,8 @@ use Orkhanahmadov\Goldenpay\Response\PaymentKey;
  * @property-read string|null $card_number_decrypted
  * @property-read bool $successful
  * @method static Payment first()
- * @method static Builder successful()
- * @method static Builder pending()
+ * @method static Builder whereSuccessful()
+ * @method static Builder wherePending()
  */
 class Payment extends Model
 {
@@ -70,6 +71,16 @@ class Payment extends Model
         parent::__construct($attributes);
 
         $this->setTable(Config::get('goldenpay.table_name'));
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @return PaymentQueryBuilder
+     */
+    public function newEloquentBuilder($query): PaymentQueryBuilder
+    {
+        return new PaymentQueryBuilder($query);
     }
 
     /**
@@ -149,41 +160,5 @@ class Payment extends Model
         } else {
             $this->attributes['card_number'] = $value;
         }
-    }
-
-    /**
-     * "successful()" scope to filter only successful payments.
-     * Successful payments are payments with "status" field value equal to STATUS_SUCCESSFUL constant value.
-     *
-     * @param Builder $builder
-     * @return Builder
-     */
-    public function scopeSuccessful(Builder $builder): Builder
-    {
-        return $builder->where('status', self::STATUS_SUCCESSFUL);
-    }
-
-    /**
-     * "pending()" scope to filter only pending payments.
-     * Pending payments are:
-     * "status" field anything other than STATUS_SUCCESSFUL constant value,
-     * PLUS
-     * "checks" field less than MINIMUM_REQUIRED_CHECKS constant value OR "created_at" timestamp less than 30 minutes.
-     *
-     * @param Builder $builder
-     *
-     * @return Builder
-     */
-    public function scopePending(Builder $builder): Builder
-    {
-        return $builder
-            ->where(function (Builder $query) {
-                $query->whereNull('status')
-                    ->orWhere('status', '<>', self::STATUS_SUCCESSFUL);
-            })
-            ->where(function (Builder $query) {
-                $query->where('checks', '<', self::MINIMUM_REQUIRED_CHECKS)
-                    ->orWhere('created_at', '>=', now()->subMinutes(30));
-            });
     }
 }

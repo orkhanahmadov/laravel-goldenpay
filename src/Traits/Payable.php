@@ -34,7 +34,7 @@ trait Payable
      */
     public function successfulPayments(): MorphMany
     {
-        return $this->morphMany(Payment::class, 'payable')->successful();
+        return $this->morphMany(Payment::class, 'payable')->whereSuccessful();
     }
 
     /**

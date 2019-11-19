@@ -37,7 +37,7 @@ class ResultCommand extends Command
             return;
         }
 
-        foreach (Payment::pending()->cursor() as $payment) {
+        foreach (Payment::wherePending()->cursor() as $payment) {
             $goldenpay->result($payment);
         }
     }

@@ -110,7 +110,7 @@ class PaymentTest extends TestCase
             ['checks' => 2, 'status' => 33, 'created_at' => now()->subMinutes(35)]
         );
 
-        $payments = Payment::pending()->get();
+        $payments = Payment::wherePending()->get();
 
         $this->assertTrue($payments->contains($pendingPayment1));
         $this->assertTrue($payments->contains($pendingPayment2));
@@ -127,7 +127,7 @@ class PaymentTest extends TestCase
         $failedPayment1 = factory(Payment::class)->create(['status' => 5]);
         $failedPayment2 = factory(Payment::class)->create(['status' => null]);
 
-        $payments = Payment::successful()->get();
+        $payments = Payment::whereSuccessful()->get();
 
         $this->assertTrue($payments->contains($successfulPayment));
         $this->assertFalse($payments->contains($failedPayment1));
