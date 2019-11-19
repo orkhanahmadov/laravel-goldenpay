@@ -52,9 +52,12 @@ class PayableTest extends TestCase
     public function testCreatesPayment()
     {
         /** @var FakePayableModel $model */
-        $model = factory(FakePayableModel::class)->create(['name' => 'my description']);
+        $model = factory(FakePayableModel::class)->create([
+            'name' => 'my description',
+            'amount' => 1550,
+        ]);
 
-        $payment = $model->createPayment(1550, CardType::MASTERCARD());
+        $payment = $model->createPayment(CardType::MASTERCARD());
 
         $this->assertInstanceOf(Payment::class, $payment);
         $this->assertSame($model->id, $payment->payable_id);
@@ -66,15 +69,32 @@ class PayableTest extends TestCase
         $this->assertSame('en', $payment->language);
     }
 
-    public function testCreatesPaymentWithCustomDescription()
+    public function testCreatesPaymentWithCustomAmount()
     {
-        $model = factory(FakePayableModel::class)->create(['name' => 'my description']);
+        /** @var FakePayableModel $model */
+        $model = factory(FakePayableModel::class)->create([
+            'name' => 'my description',
+            'amount' => 3570,
+        ]);
 
-        $payment = $model->createPayment(1550, CardType::MASTERCARD(), 'custom description');
+        $payment = $model->createPayment(CardType::MASTERCARD(), 2560);
 
         $this->assertInstanceOf(Payment::class, $payment);
         $this->assertSame($model->id, $payment->payable_id);
         $this->assertSame(FakePayableModel::class, $payment->payable_type);
+        $this->assertSame(2560, $payment->amount);
+    }
+
+    public function testCreatesPaymentWithCustomDescription()
+    {
+        $model = factory(FakePayableModel::class)->create(['name' => 'my description']);
+
+        $payment = $model->createPayment(CardType::MASTERCARD(), 5650, 'custom description');
+
+        $this->assertInstanceOf(Payment::class, $payment);
+        $this->assertSame($model->id, $payment->payable_id);
+        $this->assertSame(FakePayableModel::class, $payment->payable_type);
+        $this->assertSame(5650, $payment->amount);
         $this->assertSame('custom description', $payment->description);
     }
 }

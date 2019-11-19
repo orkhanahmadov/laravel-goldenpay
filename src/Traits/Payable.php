@@ -38,8 +38,8 @@ trait Payable
     }
 
     /**
-     * @param int $amount
      * @param CardType $cardType
+     * @param int|null $amount
      * @param string|null $description
      * @param Language|null $lang
      *
@@ -49,15 +49,20 @@ trait Payable
      * @throws \Orkhanahmadov\Goldenpay\Exceptions\GoldenpayPaymentKeyException
      */
     public function createPayment(
-        int $amount,
         CardType $cardType,
+        ?int $amount = null,
         ?string $description = null,
         ?Language $lang = null
     ): Payment {
         /** @var Goldenpay $goldenpay */
         $goldenpay = Container::getInstance()->make(Goldenpay::class);
 
-        $payment = $goldenpay->payment($amount, $cardType, $description ?: $this->description(), $lang);
+        $payment = $goldenpay->payment(
+            $amount ?: $this->amount(),
+            $cardType,
+            $description ?: $this->description(),
+            $lang
+        );
 
         $payment->payable_type = self::class;
         $payment->payable_id = $this->getKey();
@@ -67,7 +72,14 @@ trait Payable
     }
 
     /**
-     * Define description for this model's payments.
+     * Defines payment amount for this model's payments.
+     *
+     * @return int
+     */
+    abstract protected function amount(): int;
+
+    /**
+     * Defines description for this model's payments.
      *
      * @return string
      */

@@ -220,10 +220,11 @@ class Product extends Model
         'name',
         'color',
         'size',
+        'price',
     ];
 
     /**
-     * Define description for this model's payments.
+     * Defines description for this model's payments.
      *
      * @return string
      */

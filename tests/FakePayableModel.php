@@ -12,7 +12,17 @@ class FakePayableModel extends Model
     public $timestamps = false;
 
     /**
-     * Define description for this model's payments.
+     * Defines payment amount for this model's payments.
+     *
+     * @return int
+     */
+    protected function amount(): int
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Defines description for this model's payments.
      *
      * @return string
      */
