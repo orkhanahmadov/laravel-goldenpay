@@ -71,5 +71,5 @@ trait Payable
      *
      * @return string
      */
-    abstract public function description(): string;
+    abstract protected function description(): string;
 }

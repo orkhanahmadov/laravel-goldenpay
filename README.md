@@ -187,7 +187,7 @@ Model stores following information for each payment:
 * `payment_date` - datetime, payment date
 * `checks` - integer, payment check count
 
-Besides usual Eloquent functionality this model also has specific accessors and scopes which you can utilize.
+Besides usual Eloquent functionality this model also has specific accessors, scopes and relationship ability which you can utilize.
 
 ### Accessors
 
@@ -201,6 +201,50 @@ Besides usual Eloquent functionality this model also has specific accessors and 
 * `successful()` - Filters "successful" payments only
 * `pending()` - Filters "pending" payments only. Pending payments are the payments that not successful 
 and either created within 30 minutes or have less than 3 payment checks.
+
+### Relationship
+
+You can make any existing Eloquent model "payable" and attach Goldenpay payments to it.
+Use `Orkhanahmadov\LaravelGoldenpay\Traits\Payable` trait in your existing model to establish direct model relationship.
+Trait usage requires to have `description()` method which must returns payment description for given model instance.
+
+``` php
+use Illuminate\Database\Eloquent\Model;
+use Orkhanahmadov\LaravelGoldenpay\Traits\Payable;
+
+class Product extends Model
+{
+    use Payable;
+
+    protected $fillable = [
+        'name',
+        'color',
+        'size',
+    ];
+
+    /**
+     * Define description for this model's payments.
+     *
+     * @return string
+     */
+    protected function description(): string
+    {
+        return $this->name . ' - ' . $this->color;
+    }
+}
+```
+
+Now `Product` model has direct relationship with Goldenpay payments.
+By using `Payable` your model also gets access to payment related methods.
+
+#### `createPayment()`
+
+``` php
+$product = Product::find(1);
+$product->createPayment(1500, )
+```
+
+Accepts following
 
 ## Commands
 
@@ -271,7 +315,7 @@ Config file contains following settings:
 * `auth_key` - Defines Goldenpay "auth key", defaults to `.env` variable
 * `merchant_name` - Defines Goldenpay "merchant name", defaults to `.env` variable
 * `table_name` - Defines name for Goldenpay payments database table. Default: "goldenpay_payments"
-* `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted 
+* `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted // todo: warning
 when when creating payments, getting payment results. Default is `true`, 
 change to `false` if you want to disable automatic encryption. Recommended to leave it `true` for extra layer of security.
 * `payment_events` - Payment events related settings

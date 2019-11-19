@@ -16,7 +16,7 @@ class FakePayableModel extends Model
      *
      * @return string
      */
-    public function description(): string
+    protected function description(): string
     {
         return $this->name;
     }
