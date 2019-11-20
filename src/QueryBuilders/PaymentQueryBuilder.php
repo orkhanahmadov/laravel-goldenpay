@@ -14,7 +14,7 @@ class PaymentQueryBuilder extends Builder
      *
      * @return PaymentQueryBuilder
      */
-    public function whereSuccessful(): PaymentQueryBuilder
+    public function whereSuccessful(): self
     {
         return $this->where('status', Payment::STATUS_SUCCESSFUL);
     }
@@ -28,7 +28,7 @@ class PaymentQueryBuilder extends Builder
      *
      * @return PaymentQueryBuilder
      */
-    public function wherePending(): PaymentQueryBuilder
+    public function wherePending(): self
     {
         return $this
             ->where(function (Builder $query) {
