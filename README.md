@@ -198,8 +198,8 @@ Besides usual Eloquent functionality this model also has specific accessors, sco
 
 ### Scopes
 
-* `successful()` - Filters "successful" payments only
-* `pending()` - Filters "pending" payments only. Pending payments are the payments that not successful 
+* `whereSuccessful()` - Filters "successful" payments only
+* `wherePending()` - Filters "pending" payments only. Pending payments are the payments that not successful 
 and either created within 30 minutes or have less than 3 payment checks.
 
 ### Relationship
@@ -268,8 +268,8 @@ $product->createPayment(CardType::VISA());
 Accepts following arguments:
 
 * `Card type` - Instance of `Orkhanahmadov\Goldenpay\Enums\CardType`
-* `Amount` *(optional)* - When skipped will use `amount()` method in model. Use it to pass custom amount
-* `Description` *(optional)* - When skipped will use `description()` method in model. Use it to pass custom description
+* `Amount` *(optional)* - When used overwrites `amount()` method value in model
+* `Description` *(optional)* - When used overwrites `description()` method value in model
 * `Language` *(optional)* - When skipped will use Laravel's locale. Instance of `Orkhanahmadov\Goldenpay\Enums\Language`.
 
 Method returns create instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` instance.
