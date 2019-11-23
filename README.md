@@ -54,7 +54,7 @@ GOLDENPAY_AUTH_KEY=your-auth-key
 GOLDENPAY_MERCHANT_NAME=your-merchant-name
 ```
 
-To use the package you need instance of `Orkhanahmadov\LaravelGoldenpay\Goldenpay`.
+To use Goldenpay service you need instance of `Orkhanahmadov\LaravelGoldenpay\Goldenpay`.
 You can instantiate this class using Laravel's service container, for example by injecting to your controller
 
 ``` php
@@ -106,9 +106,17 @@ $goldenpay->payment(1000, CardType::MASTERCARD(), 'my payment');
 
 Method returns created instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` model.
 
+You can use `$payment_url` property to get unique payment URL and redirect user to this URL to start payment.
+
+``` php
+$payment = $goldenpay->payment(1000, CardType::MASTERCARD(), 'my payment');
+
+$payment->payment_url; // redirect user to this URL to start payment
+```
+
 ### `result()`
 
-Checks payment result based on previous payment key. Accepts 1 argument:
+Checks payment result based on previous payment key. Accepts single argument:
 
 * `Payment` - This is Goldenpay's payment key as a string, or instance of previously created `Orkhanahmadov\LaravelGoldenpay\Models\Payment` model.
 
@@ -116,7 +124,7 @@ Checks payment result based on previous payment key. Accepts 1 argument:
 $goldenpay = app(Goldenpay::class);
 $paymentModel = $goldenpay->payment(1000, CardType::MASTERCARD(), 'my payment');
 
-$result = $goldenpay->result($result);
+$result = $goldenpay->result($paymentModel);
 // or
 $result = $goldenpay->result('1234-ABCD-5678');
 ```
@@ -129,18 +137,16 @@ Goldenpay requires to have endpoints for successful and unsuccessful payment.
 For each of this endpoints Goldenpay sends GET request with `payment_key` query string attached.
 To get payment result you need to create a route to accept these requests and fetch result of the payment using received `payment_key`.
 
-Package ships with a controller that helps to simplify this procedure.
-To get started create a GET route for successful or unsuccessful payments,
-add full URL in [Goldenpay Dashboard](https://rest.goldenpay.az/merchant/) to corresponding field.
+Package ships with a controller that helps to simplify this process.
+To get started, first create a GET route for successful or unsuccessful payments 
+and add full URL in [Goldenpay Dashboard](https://rest.goldenpay.az/merchant/) to corresponding field.
 
-Create a controller class for your route and extend `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController`.
-
-Route:
 ``` php
 Route::get('payments/successful', 'App\Http\Controllers\Payment\SuccessfulPaymentController@index');
 ```
 
-Controller:
+Create a controller class for your route and extend `Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController`.
+
 ``` php
 use Orkhanahmadov\LaravelGoldenpay\Http\Controllers\GoldenpayController;
 
@@ -148,7 +154,7 @@ class SuccessfulPaymentController extends GoldenpayController
 {
     public function index()
     {
-        // return a view or JSON, up to you
+        // return a view or JSON, totally up to you
     }
 }
 ```
@@ -187,7 +193,8 @@ Model stores following information for each payment:
 * `payment_date` - datetime, payment date
 * `checks` - integer, payment check count
 
-Besides usual Eloquent functionality this model also has specific accessors, scopes and relationship ability which you can utilize.
+Besides usual Eloquent functionality this model also has specific accessors, scopes 
+and relationship abilities which you can utilize.
 
 ### Accessors
 
