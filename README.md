@@ -237,22 +237,12 @@ class Product extends Model
         'price' => 'float', // lets image that you store price as float, like "15.70" in "products" table
     ];
 
-    /**
-     * Defines payment amount for this model's payments.
-     *
-     * @return int
-     */
     protected function amount(): int
     {
         // this method needs to return integer value of price
         return $this->amount * 100;
     }
 
-    /**
-     * Defines description for this model's payments.
-     *
-     * @return string
-     */
     protected function description(): string
     {
         // this method needs to return description for payment instance
@@ -269,35 +259,42 @@ By using `Payable` your model also gets access to payment related relationships 
 
 ``` php
 $product = Product::find(1);
-$product->createPayment(CardType::VISA());
+
+$product->createPayment(CardType::VISA()); // uses product amount() and description() to create new payment instance
 ```
 
-Accepts following arguments:
+You can also override `amount` and `description()` for specific payment:
+
+``` php
+$product->createPayment(CardType::VISA(), 2599, 'my custom description');
+```
+
+Method accepts following arguments:
 
 * `Card type` - Instance of `Orkhanahmadov\Goldenpay\Enums\CardType`
-* `Amount` *(optional)* - When used overwrites `amount()` method value in model
-* `Description` *(optional)* - When used overwrites `description()` method value in model
+* `Amount` *(optional)* - When used overrides `amount()` method value in model
+* `Description` *(optional)* - When used overrides `description()` method value in model
 * `Language` *(optional)* - When skipped will use Laravel's locale. Instance of `Orkhanahmadov\Goldenpay\Enums\Language`.
 
 Method returns create instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` instance.
 
 #### `payments()`
 
-Eloquent relationship method. Return all attached payments to model.
+Eloquent relationship method. Return all related payments to model.
 
 ``` php
 $product = Product::find(1);
-$product->payments; // returns collection of Payment models
+$product->payments; // returns collection of related Payment models
 $product->payments()->where('amount', '>=', 10000); // use it as regular Eloquent relationship
 ```
 
 #### `successfulPayments()`
 
-Eloquent relationship method. Return all attached successful payments to model.
+Eloquent relationship method. Return all related successful payments to model.
 
 ``` php
 $product = Product::find(1);
-$product->successfulPayments; // returns collection of Payment models
+$product->successfulPayments; // returns collection of related Payment models
 $product->successfulPayments()->where('amount', '>=', 10000); // use it as regular Eloquent relationship
 ```
 
@@ -341,7 +338,7 @@ Available event classes:
 
 * `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCreatedEvent` - gets fired when new payment is created
 * `Orkhanahmadov\LaravelGoldenpay\Events\PaymentCheckedEvent` - gets fired when payment is checked for result
-* `Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent` - gets fired when payment is successful
+* `Orkhanahmadov\LaravelGoldenpay\Events\PaymentSuccessfulEvent` - gets fired when payment finalized as successful
 
 Each event receives instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` Eloquent model 
 as public `$payment` property.
@@ -371,7 +368,7 @@ Config file contains following settings:
 * `merchant_name` - Defines Goldenpay "merchant name", defaults to `.env` variable
 * `table_name` - Defines name for Goldenpay payments database table. Default: "goldenpay_payments"
 * `encrypt_card_numbers` - Defines if "card_number" field needs to be automatically encrypted
-when when creating payments, getting payment results. Default is `true`, 
+when when creating payments or getting payment results. Default is `true`, 
 change to `false` if you want to disable automatic encryption. Recommended to leave it `true` for extra layer of security.
 **Warning!** If you already have records in Payments table, changing this value will break encryption/decryption.
 Old values won't be encrypted/decrypted automatically, you need to do it manually.
