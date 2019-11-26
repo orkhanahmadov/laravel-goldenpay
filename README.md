@@ -406,6 +406,11 @@ If you discover any security related issues, please email ahmadov90@gmail.com in
 - [Orkhan Ahmadov](https://github.com/orkhanahmadov)
 - [All Contributors](../../contributors)
 
+## Support me
+
+If you like my work, if my open-source contributions help you or your company, 
+please consider supporting me through [Github Sponsors](https://github.com/sponsors/orkhanahmadov).
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
