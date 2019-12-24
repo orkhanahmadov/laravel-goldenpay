@@ -238,7 +238,7 @@ class Product extends Model
     protected function amount(): int
     {
         // this method needs to return integer value of price
-        return $this->amount * 100;
+        return $this->price * 100;
     }
 
     protected function description(): string
