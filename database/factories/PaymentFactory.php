@@ -13,6 +13,6 @@ $factory->define(Payment::class, function (Faker $faker) {
         'card_type' => $faker->randomElement(CardType::values()),
         'language' => $faker->randomElement(Language::values()),
         'description' => $faker->sentence,
-//        'checks' => 0,
+        //        'checks' => 0,
     ];
 });
