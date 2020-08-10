@@ -274,7 +274,7 @@ Method accepts following arguments:
 * `Description` *(optional)* - When used overrides `description()` method value in model
 * `Language` *(optional)* - When skipped will use Laravel's locale. Instance of `Orkhanahmadov\Goldenpay\Enums\Language`.
 
-Method returns create instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment` instance.
+Method returns created instance of `Orkhanahmadov\LaravelGoldenpay\Models\Payment`.
 
 #### `payments()`
 
