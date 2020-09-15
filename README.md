@@ -26,8 +26,11 @@ Full-feature Laravel package for Goldenpay integration.
 
 ## Requirements
 
-- PHP **^7.2**
-- Laravel **5.8.*** or **^6.0**
+| Package | PHP  | Laravel       |
+|---------|------|---------------|
+| 1.0     | ^7.2 | 5.8.* or ^6.0 |
+| 2.0     | ^7.2 | ^6.0 or ^7.0  |
+| 3.0     | ^7.3 | ^8.0          |
 
 ## Installation
 
