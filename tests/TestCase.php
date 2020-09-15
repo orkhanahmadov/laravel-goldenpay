@@ -35,7 +35,7 @@ class TestCase extends Orchestra
      */
     protected function setUpDatabase()
     {
-        include_once __DIR__.'/../database/migrations/goldenpay_payments_table.php.stub';
+        include_once __DIR__ . '/../database/migrations/goldenpay_payments_table.php.stub';
         (new \CreateGoldenpayPaymentsTable())->up();
 
         DB::statement(
@@ -48,7 +48,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->setUpDatabase();
-        $this->withFactories(__DIR__.'/../database/factories');
+        $this->withFactories(__DIR__ . '/../database/factories');
 
         $this->app->bind(PaymentInterface::class, FakePaymentLibrary::class);
         $this->goldenpay = $this->app->make(\Orkhanahmadov\LaravelGoldenpay\Goldenpay::class);
