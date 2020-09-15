@@ -2,7 +2,7 @@
 
 namespace Orkhanahmadov\LaravelGoldenpay\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Config;
@@ -68,9 +68,9 @@ class Payment extends Model
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
-
         $this->setTable(Config::get('goldenpay.table_name'));
+
+        parent::__construct($attributes);
     }
 
     /**
