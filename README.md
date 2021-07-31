@@ -30,7 +30,7 @@ Full-feature Laravel package for Goldenpay integration.
 |---------|------|---------------|
 | 1.0     | ^7.2 | 5.8.* or ^6.0 |
 | 2.0     | ^7.2 | ^6.0 or ^7.0  |
-| 3.0     | ^7.3 | ^8.0          |
+| 3.0     | ^7.3 or ^8.0 | ^8.0          |
 
 ## Installation
 
