@@ -20,9 +20,9 @@ Full-feature Laravel package for Goldenpay integration.
 3. [Usage](#usage)
 3. [Controller](#controller)
 4. [Models](#models)
-4. [Commands](#commands)
-5. [Events](#events)
-6. [Configuration](#configuration)
+5. [Commands](#commands)
+6. [Events](#events)
+7. [Configuration](#configuration)
 
 ## Requirements
 
@@ -391,10 +391,6 @@ Setting specific payment event to `null` disables that event without interruptin
 ``` bash
 composer test
 ```
-
-### Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
 ## Contributing
 

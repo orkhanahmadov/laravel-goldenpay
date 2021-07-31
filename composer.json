@@ -16,14 +16,14 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
         "illuminate/contracts": "^8.0",
         "illuminate/console": "^8.0",
         "illuminate/database": "^8.0",
         "illuminate/http": "^8.0",
         "illuminate/queue": "^8.0",
         "illuminate/support": "^8.0",
-        "orkhanahmadov/goldenpay": "^2.0"
+        "orkhanahmadov/goldenpay": "^2.2"
     },
     "require-dev": {
         "laravel/legacy-factories": "^1.0",
